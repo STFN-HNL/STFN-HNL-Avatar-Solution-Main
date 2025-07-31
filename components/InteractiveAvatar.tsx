@@ -186,15 +186,14 @@ function InteractiveAvatar() {
                 {error}
               </div>
             )}
-            {sessionState === StreamingAvatarSessionState.CONNECTED ? (
-              <AvatarControls />
-            ) : sessionState === StreamingAvatarSessionState.INACTIVE ? (
+            {sessionState === StreamingAvatarSessionState.INACTIVE && (
               <div className="flex flex-row gap-4">
                 <Button onClick={() => startSession()}>
                   Start Voice Chat
                 </Button>
               </div>
-            ) : (
+            )}
+            {sessionState === StreamingAvatarSessionState.CONNECTING && (
               <LoadingIcon />
             )}
           </div>

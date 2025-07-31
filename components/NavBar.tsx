@@ -65,6 +65,7 @@ export function NavBar() {
             Learn More
           </Link>
         </div>
+              </div>
       </div>
     </div>
   );
