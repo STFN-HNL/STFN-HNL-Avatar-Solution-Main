@@ -1,9 +1,0 @@
-[build]
-builder = "nixpacks"
-
-[deploy]
-startCommand = "npm start"
-
-[env]
-DEPLOYMENT_ENV = "demo-telecom"
-NODE_ENV = "production" 
