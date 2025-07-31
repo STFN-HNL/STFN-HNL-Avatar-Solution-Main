@@ -23,12 +23,12 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: {
       default: title,
-      template: `%s - ${branding.companyName || 'HeyGen'}`,
+      template: `%s - ${branding?.companyName || 'HeyGen'}`,
     },
     icons: {
       icon: "/heygen-logo.png",
     },
-    description: `Interactive Avatar solution powered by HeyGen - ${branding.companyName || 'Demo'}`,
+    description: `Interactive Avatar solution powered by HeyGen - ${branding?.companyName || 'Demo'}`,
   };
 }
 
@@ -37,10 +37,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Pass environment to client-side
-  const environmentScript = `
-    window.__DEPLOYMENT_ENV__ = '${EnvironmentUtils.environment}';
-  `;
+
 
   return (
     <html
@@ -49,7 +46,6 @@ export default function RootLayout({
       lang="en"
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: environmentScript }} />
       </head>
       <body className="min-h-screen bg-black text-white">
         <main className="relative flex flex-col gap-6 h-screen w-screen">

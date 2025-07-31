@@ -35,4 +35,4 @@ export const STT_LANGUAGE_LIST = [
 ];
 
 // Export environment configuration for use in components
-export { CURRENT_CONFIG, CURRENT_ENVIRONMENT } from './environments';
+export { CURRENT_CONFIG } from './environments';

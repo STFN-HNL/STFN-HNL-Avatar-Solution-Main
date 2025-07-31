@@ -6,13 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
-    "deploy:client": "./scripts/deploy.sh client-production",
-    "deploy:demo-telecom": "./scripts/deploy.sh demo-telecom",
-    "deploy:demo-2": "./scripts/deploy.sh demo-2",
-    "deploy:all": "npm run deploy:client && npm run deploy:demo-telecom && npm run deploy:demo-2",
-    "setup:branches": "./scripts/setup-branches.sh",
-    "env:check": "node scripts/check-env.js"
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx"
   },
   "dependencies": {
     "@heygen/streaming-avatar": "^2.0.13",
