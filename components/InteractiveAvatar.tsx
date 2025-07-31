@@ -23,9 +23,9 @@ import { MessageHistory } from "./AvatarSession/MessageHistory";
 import { AVATARS } from "@/app/lib/constants";
 
 const DEFAULT_CONFIG: StartAvatarRequest = {
-  quality: AvatarQuality.Low,
-  avatarName: AVATARS[0].avatar_id,
-  knowledgeId: undefined,
+  quality: AvatarQuality.High,
+  avatarName: "Graham_Black_Shirt_public",
+  knowledgeId: "503b21e15b7c4e72913a0a212378e688",
   voice: {
     rate: 1.5,
     emotion: VoiceEmotion.EXCITED,
@@ -63,31 +63,24 @@ function InteractiveAvatar() {
     }
   }
 
-  const startSessionV2 = useMemoizedFn(async (isVoiceChat: boolean) => {
+  // Always start with voice chat enabled
+  const startSession = useMemoizedFn(async () => {
     try {
-      const newToken = await fetchAccessToken();
-      const avatar = initAvatar(newToken);
+      const accessToken = await fetchAccessToken();
 
-      avatar.on(StreamingEvents.AVATAR_START_TALKING, (e) => {
-        console.log("Avatar started talking", e);
-      });
-      avatar.on(StreamingEvents.AVATAR_STOP_TALKING, (e) => {
-        console.log("Avatar stopped talking", e);
-      });
-      avatar.on(StreamingEvents.STREAM_DISCONNECTED, () => {
-        console.log("Stream disconnected");
-      });
-      avatar.on(StreamingEvents.STREAM_READY, (event) => {
-        console.log(">>>>> Stream ready:", event.detail);
-      });
+      const avatar = await initAvatar(accessToken);
+
       avatar.on(StreamingEvents.USER_START, (event) => {
-        console.log(">>>>> User started talking:", event);
+        console.log(">>>>> User started:", event);
       });
       avatar.on(StreamingEvents.USER_STOP, (event) => {
-        console.log(">>>>> User stopped talking:", event);
+        console.log(">>>>> User stopped:", event);
       });
-      avatar.on(StreamingEvents.USER_END_MESSAGE, (event) => {
-        console.log(">>>>> User end message:", event);
+      avatar.on(StreamingEvents.AVATAR_START_TALKING, (event) => {
+        console.log(">>>>> Avatar started talking:", event);
+      });
+      avatar.on(StreamingEvents.AVATAR_STOP_TALKING, (event) => {
+        console.log(">>>>> Avatar stopped talking:", event);
       });
       avatar.on(StreamingEvents.USER_TALKING_MESSAGE, (event) => {
         console.log(">>>>> User talking message:", event);
@@ -101,9 +94,8 @@ function InteractiveAvatar() {
 
       await startAvatar(config);
 
-      if (isVoiceChat) {
-        await startVoiceChat();
-      }
+      // Automatically start voice chat
+      await startVoiceChat();
     } catch (error) {
       console.error("Error starting avatar session:", error);
     }
@@ -137,11 +129,8 @@ function InteractiveAvatar() {
             <AvatarControls />
           ) : sessionState === StreamingAvatarSessionState.INACTIVE ? (
             <div className="flex flex-row gap-4">
-              <Button onClick={() => startSessionV2(true)}>
+              <Button onClick={() => startSession()}>
                 Start Voice Chat
-              </Button>
-              <Button onClick={() => startSessionV2(false)}>
-                Start Text Chat
               </Button>
             </div>
           ) : (

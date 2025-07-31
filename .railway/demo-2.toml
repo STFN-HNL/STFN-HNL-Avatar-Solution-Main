@@ -1,0 +1,9 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "npm start"
+
+[env]
+DEPLOYMENT_ENV = "demo-2"
+NODE_ENV = "production" 

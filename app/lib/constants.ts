@@ -1,25 +1,7 @@
-export const AVATARS = [
-  {
-    avatar_id: "Ann_Therapist_public",
-    name: "Ann Therapist",
-  },
-  {
-    avatar_id: "Shawn_Therapist_public",
-    name: "Shawn Therapist",
-  },
-  {
-    avatar_id: "Bryan_FitnessCoach_public",
-    name: "Bryan Fitness Coach",
-  },
-  {
-    avatar_id: "Dexter_Doctor_Standing2_public",
-    name: "Dexter Doctor Standing",
-  },
-  {
-    avatar_id: "Elenora_IT_Sitting_public",
-    name: "Elenora Tech Expert",
-  },
-];
+import { CURRENT_CONFIG } from './environments';
+
+// Export environment-aware avatars
+export const AVATARS = CURRENT_CONFIG.avatars;
 
 export const STT_LANGUAGE_LIST = [
   { label: "Bulgarian", value: "bg", key: "bg" },
@@ -51,3 +33,6 @@ export const STT_LANGUAGE_LIST = [
   { label: "Ukrainian", value: "uk", key: "uk" },
   { label: "Vietnamese", value: "vi", key: "vi" },
 ];
+
+// Export environment configuration for use in components
+export { CURRENT_CONFIG, CURRENT_ENVIRONMENT } from './environments';
