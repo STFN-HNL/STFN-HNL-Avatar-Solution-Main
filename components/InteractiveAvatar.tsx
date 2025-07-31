@@ -145,35 +145,60 @@ function InteractiveAvatar() {
 
   return (
     <div className="w-full flex flex-col gap-4">
-      <div className="flex flex-col rounded-xl bg-white shadow-lg border border-gray-200 overflow-hidden">
-        <div className="relative w-full aspect-video overflow-hidden flex flex-col items-center justify-center">
-          {sessionState !== StreamingAvatarSessionState.INACTIVE ? (
-            <AvatarVideo ref={mediaStream} />
-          ) : (
-            <AvatarConfig config={config} onConfigChange={setConfig} />
-          )}
-        </div>
-        <div className="flex flex-col gap-3 items-center justify-center p-4 border-t border-gray-200 w-full bg-gray-50">
-          {error && (
-            <div className="text-red-600 text-sm p-3 bg-red-50 rounded-lg border border-red-200 w-full text-center">
-              {error}
+      {sessionState === StreamingAvatarSessionState.CONNECTED ? (
+        // Side-by-side layout when connected
+        <div className="flex flex-row gap-6">
+          {/* Avatar section - left side, smaller */}
+          <div className="flex-shrink-0 w-[560px]">
+            <div className="flex flex-col rounded-xl bg-white shadow-lg border border-gray-200 overflow-hidden">
+              <div className="relative w-full aspect-video overflow-hidden flex flex-col items-center justify-center">
+                <AvatarVideo ref={mediaStream} />
+              </div>
+              <div className="flex flex-col gap-3 items-center justify-center p-4 border-t border-gray-200 w-full bg-gray-50">
+                {error && (
+                  <div className="text-red-600 text-sm p-3 bg-red-50 rounded-lg border border-red-200 w-full text-center">
+                    {error}
+                  </div>
+                )}
+                <AvatarControls />
+              </div>
             </div>
-          )}
-          {sessionState === StreamingAvatarSessionState.CONNECTED ? (
-            <AvatarControls />
-          ) : sessionState === StreamingAvatarSessionState.INACTIVE ? (
-            <div className="flex flex-row gap-4">
-              <Button onClick={() => startSession()}>
-                Start Voice Chat
-              </Button>
-            </div>
-          ) : (
-            <LoadingIcon />
-          )}
+          </div>
+          
+          {/* Transcript section - right side */}
+          <div className="flex-1 flex flex-col">
+            <MessageHistory />
+          </div>
         </div>
-      </div>
-      {sessionState === StreamingAvatarSessionState.CONNECTED && (
-        <MessageHistory />
+      ) : (
+        // Original layout when not connected - full width
+        <div className="flex flex-col rounded-xl bg-white shadow-lg border border-gray-200 overflow-hidden">
+          <div className="relative w-full aspect-video overflow-hidden flex flex-col items-center justify-center">
+            {sessionState !== StreamingAvatarSessionState.INACTIVE ? (
+              <AvatarVideo ref={mediaStream} />
+            ) : (
+              <AvatarConfig config={config} onConfigChange={setConfig} />
+            )}
+          </div>
+          <div className="flex flex-col gap-3 items-center justify-center p-4 border-t border-gray-200 w-full bg-gray-50">
+            {error && (
+              <div className="text-red-600 text-sm p-3 bg-red-50 rounded-lg border border-red-200 w-full text-center">
+                {error}
+              </div>
+            )}
+            {sessionState === StreamingAvatarSessionState.CONNECTED ? (
+              <AvatarControls />
+            ) : sessionState === StreamingAvatarSessionState.INACTIVE ? (
+              <div className="flex flex-row gap-4">
+                <Button onClick={() => startSession()}>
+                  Start Voice Chat
+                </Button>
+              </div>
+            ) : (
+              <LoadingIcon />
+            )}
+          </div>
+        </div>
       )}
     </div>
   );

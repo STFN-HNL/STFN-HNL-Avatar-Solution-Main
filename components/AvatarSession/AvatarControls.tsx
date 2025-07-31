@@ -15,9 +15,6 @@ export const AvatarControls: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-3 relative w-full items-center">
-      <div className="text-center text-sm text-green-700 p-2 bg-green-50 border border-green-200 rounded-lg">
-        Voice Chat Active
-      </div>
       <div className="flex items-center gap-6">
         <AudioInput />
         <button
