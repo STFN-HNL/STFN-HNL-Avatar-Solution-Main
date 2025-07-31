@@ -6,6 +6,8 @@ import {
   StartAvatarRequest,
   STTProvider,
   ElevenLabsModel,
+  TaskType,
+  TaskMode,
 } from "@heygen/streaming-avatar";
 import { useEffect, useRef, useState } from "react";
 import { useMemoizedFn, useUnmount } from "ahooks";
@@ -16,7 +18,7 @@ import { AvatarVideo } from "./AvatarSession/AvatarVideo";
 import { useStreamingAvatarSession } from "./logic/useStreamingAvatarSession";
 import { AvatarControls } from "./AvatarSession/AvatarControls";
 import { useVoiceChat } from "./logic/useVoiceChat";
-import { StreamingAvatarProvider, StreamingAvatarSessionState } from "./logic";
+import { StreamingAvatarProvider, StreamingAvatarSessionState, useStreamingAvatarContext } from "./logic";
 import { LoadingIcon } from "./Icons";
 import { MessageHistory } from "./AvatarSession/MessageHistory";
 
@@ -42,9 +44,11 @@ function InteractiveAvatar() {
   const { initAvatar, startAvatar, stopAvatar, sessionState, stream } =
     useStreamingAvatarSession();
   const { startVoiceChat } = useVoiceChat();
+  const { avatarRef } = useStreamingAvatarContext();
 
   const [config, setConfig] = useState<StartAvatarRequest>(DEFAULT_CONFIG);
   const [error, setError] = useState<string | null>(null);
+  const [hasSpokenIntro, setHasSpokenIntro] = useState(false);
 
   const mediaStream = useRef<HTMLVideoElement>(null);
 
@@ -59,7 +63,7 @@ function InteractiveAvatar() {
 
       return token;
     } catch (error) {
-      console.error("Error fetching access token:", error);
+
       throw error;
     }
   }
@@ -68,6 +72,7 @@ function InteractiveAvatar() {
   const startSession = useMemoizedFn(async () => {
     try {
       setError(null); // Clear any previous errors
+      setHasSpokenIntro(false); // Reset intro flag
       const accessToken = await fetchAccessToken();
 
       const avatar = await initAvatar(accessToken);
@@ -94,10 +99,31 @@ function InteractiveAvatar() {
         console.log(">>>>> Avatar end message:", event);
       });
 
+      // Hook into STREAM_READY to send intro when avatar is actually ready
+      avatar.on(StreamingEvents.STREAM_READY, () => {
+        console.log(">>>>> Stream ready, preparing intro message");
+      });
+
       await startAvatar(config);
 
       // Automatically start voice chat
       await startVoiceChat();
+
+      // Send intro message after voice chat is started
+      console.log(">>>>> Voice chat started, sending intro message");
+      if (!hasSpokenIntro) {
+        setTimeout(() => {
+          console.log(">>>>> Attempting to speak intro message");
+          avatar.speak({
+            text: "Hi, I'm Jacob Fischer from Fischer Accounting & Tax Consulting. In the next 5 minutes, we'll roleplay a sales call—your job is to sell me your telecom services while handling my objections on price and value. Say \"START Training\" to begin.",
+            taskType: TaskType.REPEAT,
+            taskMode: TaskMode.SYNC,
+          });
+          setHasSpokenIntro(true);
+          console.log(">>>>> Intro message sent");
+        }, 2000);
+      }
+
     } catch (error) {
       console.error("Error starting avatar session:", error);
       setError(error instanceof Error ? error.message : "Failed to start avatar session. Please check your API configuration.");
@@ -155,7 +181,7 @@ function InteractiveAvatar() {
 
 export default function InteractiveAvatarWrapper() {
   return (
-    <StreamingAvatarProvider basePath={process.env.NEXT_PUBLIC_BASE_API_URL}>
+    <StreamingAvatarProvider>
       <InteractiveAvatar />
     </StreamingAvatarProvider>
   );
