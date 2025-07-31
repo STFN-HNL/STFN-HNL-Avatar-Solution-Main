@@ -21,6 +21,7 @@ import { useVoiceChat } from "./logic/useVoiceChat";
 import { StreamingAvatarProvider, StreamingAvatarSessionState, useStreamingAvatarContext } from "./logic";
 import { LoadingIcon } from "./Icons";
 import { MessageHistory } from "./AvatarSession/MessageHistory";
+import { TelcoOnboarding } from "./TelcoOnboarding";
 
 import { AVATARS } from "@/app/lib/constants";
 
@@ -49,6 +50,7 @@ function InteractiveAvatar() {
   const [config, setConfig] = useState<StartAvatarRequest>(DEFAULT_CONFIG);
   const [error, setError] = useState<string | null>(null);
   const [hasSpokenIntro, setHasSpokenIntro] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(true);
 
   const mediaStream = useRef<HTMLVideoElement>(null);
 
@@ -130,6 +132,10 @@ function InteractiveAvatar() {
     }
   });
 
+  const handleOnboardingComplete = () => {
+    setShowOnboarding(false);
+  };
+
   useUnmount(() => {
     stopAvatar();
   });
@@ -176,6 +182,8 @@ function InteractiveAvatar() {
           <div className="relative w-full aspect-video overflow-hidden flex flex-col items-center justify-center">
             {sessionState !== StreamingAvatarSessionState.INACTIVE ? (
               <AvatarVideo ref={mediaStream} />
+            ) : showOnboarding ? (
+              <TelcoOnboarding onComplete={handleOnboardingComplete} />
             ) : (
               <AvatarConfig config={config} onConfigChange={setConfig} />
             )}
@@ -186,7 +194,7 @@ function InteractiveAvatar() {
                 {error}
               </div>
             )}
-            {sessionState === StreamingAvatarSessionState.INACTIVE && (
+            {sessionState === StreamingAvatarSessionState.INACTIVE && !showOnboarding && (
               <div className="flex flex-row gap-4">
                 <Button onClick={() => startSession()}>
                   Start Voice Chat
