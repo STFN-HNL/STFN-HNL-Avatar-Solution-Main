@@ -44,6 +44,7 @@ function InteractiveAvatar() {
   const { startVoiceChat } = useVoiceChat();
 
   const [config, setConfig] = useState<StartAvatarRequest>(DEFAULT_CONFIG);
+  const [error, setError] = useState<string | null>(null);
 
   const mediaStream = useRef<HTMLVideoElement>(null);
 
@@ -66,6 +67,7 @@ function InteractiveAvatar() {
   // Always start with voice chat enabled
   const startSession = useMemoizedFn(async () => {
     try {
+      setError(null); // Clear any previous errors
       const accessToken = await fetchAccessToken();
 
       const avatar = await initAvatar(accessToken);
@@ -98,6 +100,7 @@ function InteractiveAvatar() {
       await startVoiceChat();
     } catch (error) {
       console.error("Error starting avatar session:", error);
+      setError(error instanceof Error ? error.message : "Failed to start avatar session. Please check your API configuration.");
     }
   });
 
@@ -125,6 +128,11 @@ function InteractiveAvatar() {
           )}
         </div>
         <div className="flex flex-col gap-3 items-center justify-center p-4 border-t border-zinc-700 w-full">
+          {error && (
+            <div className="text-red-400 text-sm p-3 bg-red-900/20 rounded-lg border border-red-900/50 w-full text-center">
+              {error}
+            </div>
+          )}
           {sessionState === StreamingAvatarSessionState.CONNECTED ? (
             <AvatarControls />
           ) : sessionState === StreamingAvatarSessionState.INACTIVE ? (
