@@ -46,7 +46,7 @@ export default function RootLayout({
     >
       <head>
       </head>
-      <body className="min-h-screen bg-black text-white">
+      <body className="min-h-screen bg-gray-50 text-gray-900 antialiased">
         <main className="relative flex flex-col gap-6 h-screen w-screen">
           {children}
         </main>

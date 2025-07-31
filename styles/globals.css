@@ -2,8 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Smooth scrolling for better UX */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced list styling for light theme */
 li {
   list-style-type: square;
   margin-left: 30px;
   padding: 2px;
+  color: #374151; /* gray-700 */
+}
+
+/* Focus styles for better accessibility */
+*:focus-visible {
+  outline: 2px solid #3B82F6; /* blue-600 */
+  outline-offset: 2px;
+}
+
+/* Improved selection styling */
+::selection {
+  background-color: #DBEAFE; /* blue-100 */
+  color: #1E40AF; /* blue-800 */
 }

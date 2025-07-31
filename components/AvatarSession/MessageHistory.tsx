@@ -17,7 +17,7 @@ export const MessageHistory: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="w-[600px] overflow-y-auto flex flex-col gap-2 px-2 py-2 text-white self-center max-h-[150px]"
+      className="w-[600px] overflow-y-auto flex flex-col gap-2 px-4 py-4 text-gray-900 self-center max-h-[150px] bg-white rounded-lg shadow-sm border border-gray-200"
     >
       {messages.map((message) => (
         <div
@@ -28,10 +28,10 @@ export const MessageHistory: React.FC = () => {
               : "self-start items-start"
           }`}
         >
-          <p className="text-xs text-zinc-400">
+          <p className="text-xs text-gray-500">
             {message.sender === MessageSender.AVATAR ? "Avatar" : "You"}
           </p>
-          <p className="text-sm">{message.content}</p>
+          <p className="text-sm text-gray-800">{message.content}</p>
         </div>
       ))}
     </div>

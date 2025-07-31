@@ -119,7 +119,7 @@ function InteractiveAvatar() {
 
   return (
     <div className="w-full flex flex-col gap-4">
-      <div className="flex flex-col rounded-xl bg-zinc-900 overflow-hidden">
+      <div className="flex flex-col rounded-xl bg-white shadow-lg border border-gray-200 overflow-hidden">
         <div className="relative w-full aspect-video overflow-hidden flex flex-col items-center justify-center">
           {sessionState !== StreamingAvatarSessionState.INACTIVE ? (
             <AvatarVideo ref={mediaStream} />
@@ -127,9 +127,9 @@ function InteractiveAvatar() {
             <AvatarConfig config={config} onConfigChange={setConfig} />
           )}
         </div>
-        <div className="flex flex-col gap-3 items-center justify-center p-4 border-t border-zinc-700 w-full">
+        <div className="flex flex-col gap-3 items-center justify-center p-4 border-t border-gray-200 w-full bg-gray-50">
           {error && (
-            <div className="text-red-400 text-sm p-3 bg-red-900/20 rounded-lg border border-red-900/50 w-full text-center">
+            <div className="text-red-600 text-sm p-3 bg-red-50 rounded-lg border border-red-200 w-full text-center">
               {error}
             </div>
           )}

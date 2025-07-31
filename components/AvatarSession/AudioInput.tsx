@@ -1,7 +1,6 @@
 import React from "react";
 
 import { useVoiceChat } from "../logic/useVoiceChat";
-import { Button } from "../Button";
 import { LoadingIcon, MicIcon, MicOffIcon } from "../Icons";
 import { useConversationState } from "../logic/useConversationState";
 
@@ -20,22 +19,30 @@ export const AudioInput: React.FC = () => {
 
   return (
     <div>
-      <Button
-        className={`!p-2 relative`}
+      <button
+        className={`
+          relative w-16 h-16 rounded-full border-none transition-all duration-300 shadow-lg
+          flex items-center justify-center disabled:opacity-50 hover:scale-105
+          ${
+            isMuted 
+              ? "bg-red-500 hover:bg-red-600" 
+              : "bg-green-500 hover:bg-green-600"
+          }
+        `}
         disabled={isVoiceChatLoading}
         onClick={handleMuteClick}
       >
         <div
-          className={`absolute left-0 top-0 rounded-lg border-2 border-[#3B82F6] w-full h-full ${isUserTalking ? "animate-ping" : ""}`}
+          className={`absolute left-0 top-0 rounded-full border-2 border-white w-full h-full ${isUserTalking ? "animate-ping" : ""} opacity-30`}
         />
         {isVoiceChatLoading ? (
-          <LoadingIcon className="animate-spin" size={20} />
+          <LoadingIcon className="animate-spin text-white" size={24} />
         ) : isMuted ? (
-          <MicOffIcon size={20} />
+          <MicOffIcon className="text-white" size={24} />
         ) : (
-          <MicIcon size={20} />
+          <MicIcon className="text-white" size={24} />
         )}
-      </Button>
+      </button>
     </div>
   );
 };
