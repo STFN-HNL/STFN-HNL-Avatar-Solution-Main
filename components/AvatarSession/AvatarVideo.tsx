@@ -11,7 +11,7 @@ export const AvatarVideo = forwardRef<HTMLVideoElement>(({}, ref) => {
   const { sessionState, stopAvatar } = useStreamingAvatarSession();
   const { connectionQuality } = useConnectionQuality();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationIdRef = useRef<number>();
+  const animationIdRef = useRef<number | undefined>(undefined);
 
   const isLoaded = sessionState === StreamingAvatarSessionState.CONNECTED;
 
