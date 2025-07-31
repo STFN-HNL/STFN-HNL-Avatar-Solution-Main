@@ -5,22 +5,19 @@ import { EnvironmentUtils } from "@/app/lib/environment-utils";
 
 import { GithubIcon, HeyGenLogo } from "./Icons";
 
-export default function NavBar() {
+export function NavBar() {
   const branding = EnvironmentUtils.getBranding();
 
   return (
-    <>
-      <div className="flex flex-row justify-between items-center w-[1000px] m-auto p-6">
-        <div className="flex flex-row items-center gap-4">
-          <Link href="https://app.heygen.com/" target="_blank">
+    <div className="bg-gradient-to-r from-purple-600 to-indigo-600 border-b border-gray-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <div className="flex items-center gap-3">
             <HeyGenLogo />
-          </Link>
-          <div className="bg-gradient-to-br from-blue-600 to-indigo-600 bg-clip-text">
-            <p className="text-xl font-semibold text-transparent">
-              {branding?.title || "HeyGen Interactive Avatar SDK NextJS Demo"}
-            </p>
+            <h1 className="text-sm font-semibold text-white tracking-tight">
+              {branding?.title || "Avatar Solution"}
+            </h1>
           </div>
-        </div>
         
         <div className="flex flex-row items-center gap-6 text-gray-700">
           <Link
@@ -69,6 +66,8 @@ export default function NavBar() {
           </Link>
         </div>
       </div>
-    </>
+    </div>
   );
 }
+
+export default NavBar;

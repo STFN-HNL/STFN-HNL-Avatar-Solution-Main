@@ -14,6 +14,6 @@ export class EnvironmentUtils {
   }
 
   static getTitle(): string {
-    return this.getBranding()?.title || 'HeyGen Interactive Avatar';
+    return this.getBranding()?.title || 'Avatar Solution';
   }
 } 

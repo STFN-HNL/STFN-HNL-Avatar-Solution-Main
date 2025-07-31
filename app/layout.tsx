@@ -22,12 +22,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: {
       default: title,
-      template: `%s - ${branding?.companyName || 'HeyGen'}`,
+      template: `%s - ${branding?.companyName || 'Avatar Solution'}`,
     },
-    icons: {
-      icon: "/heygen-logo.png",
-    },
-    description: `Interactive Avatar solution powered by HeyGen - ${branding?.companyName || 'Demo'}`,
+    description: `Interactive Avatar solution - ${branding?.companyName || 'Demo'}`,
   };
 }
 

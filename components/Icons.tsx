@@ -1,5 +1,5 @@
 export function HeyGenLogo() {
-  return <img alt="HeyGen Logo" className="h-8" src="/heygen-logo.png" />;
+  return <span className="text-lg font-semibold">Avatar Solution</span>;
 }
 
 type IconSvgProps = {

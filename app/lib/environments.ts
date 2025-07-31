@@ -51,8 +51,8 @@ export const ENVIRONMENT_CONFIG: EnvironmentConfig = {
     textChat: true,
   },
   branding: {
-    title: "HeyGen Avatar Demo",
-    companyName: "HeyGen",
+    title: "Avatar Solution",
+    companyName: "Avatar Solution",
   },
 };
 
