@@ -16,7 +16,7 @@ export default function App() {
       {showOnboarding ? (
         <ScrollOnboarding onComplete={handleOnboardingComplete} />
       ) : (
-        <div className="w-screen h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 via-white to-blue-50">
+        <div className="w-screen h-screen flex flex-col items-center justify-center bg-gradient-to-br from-neutral via-primary-light/10 to-accent/10">
           {/* Avatar appears after onboarding with smooth transition */}
           <div className="w-[960px] flex flex-col items-start justify-start gap-5 mx-auto animate-fade-in">
             <div className="w-full">

@@ -71,28 +71,28 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({ onComplete }
   const cards = [
     {
       id: "hero",
-      gradient: "from-blue-500 to-purple-600",
+      gradient: "from-accent to-primary-light",
       content: (
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden min-h-[600px] flex items-center shadow-stack">
+        <div className="bg-neutral rounded-3xl shadow-2xl overflow-hidden min-h-[600px] flex items-center shadow-stack">
           <div className="w-full p-12 text-center space-y-8">
             <div className="space-y-6">
-              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
+              <h1 className="text-5xl md:text-6xl font-bold text-primary-dark leading-tight">
                 Smart Conversations,
-                <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="block text-accent">
                   Real Results
                 </span>
               </h1>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              <p className="text-xl text-primary-light max-w-2xl mx-auto">
                 Experience the future of AI-powered customer interactions with our interactive avatar demo
               </p>
             </div>
             <div className="flex flex-col items-center space-y-4">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center animate-bounce">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center animate-bounce">
+                <svg className="w-8 h-8 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                 </svg>
               </div>
-              <p className="text-sm text-gray-500">Scroll down to continue</p>
+              <p className="text-sm text-primary-light">Scroll down to continue</p>
             </div>
           </div>
         </div>
@@ -100,21 +100,21 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({ onComplete }
     },
     {
       id: "step1",
-      gradient: "from-emerald-500 to-blue-600",
+      gradient: "from-accent to-primary-dark",
       content: (
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden min-h-[600px] shadow-stack">
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-8 border-b border-gray-100">
+        <div className="bg-neutral rounded-3xl shadow-2xl overflow-hidden min-h-[600px] shadow-stack">
+          <div className="bg-gradient-to-r from-accent/10 to-primary-light/20 p-8 border-b border-primary-light">
             <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+              <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-primary-dark font-bold text-xl">
                 1
               </div>
-              <h2 className="text-3xl font-bold text-gray-900">Welcome to Your Demo</h2>
+              <h2 className="text-3xl font-bold text-primary-dark">Welcome to Your Demo</h2>
             </div>
           </div>
           <div className="p-8">
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-6">
-                <h3 className="text-xl font-semibold text-gray-800">What You'll Experience</h3>
+                <h3 className="text-xl font-semibold text-primary-dark">What You'll Experience</h3>
                 <div className="space-y-4">
                   {[
                     "Interactive AI avatar conversations",
@@ -123,24 +123,24 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({ onComplete }
                     "Professional business communication"
                   ].map((item, index) => (
                     <div key={index} className="flex items-start space-x-3">
-                      <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="w-6 h-6 bg-accent rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg className="w-3 h-3 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                       </div>
-                      <span className="text-gray-700">{item}</span>
+                      <span className="text-primary-dark">{item}</span>
                     </div>
                   ))}
                 </div>
               </div>
-              <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-2xl">
-                <h4 className="font-semibold text-gray-800 mb-3">Demo Overview</h4>
-                <p className="text-gray-600 mb-4">
+              <div className="bg-gradient-to-br from-accent/10 to-primary-light/20 p-6 rounded-2xl">
+                <h4 className="font-semibold text-primary-dark mb-3">Demo Overview</h4>
+                <p className="text-primary-light mb-4">
                   You'll interact with an AI avatar playing the role of a telecom customer service representative. 
                   Experience natural conversations and realistic customer service scenarios.
                 </p>
-                <div className="bg-white p-4 rounded-lg">
-                  <p className="text-sm font-medium text-blue-600">Duration: ~10 minutes</p>
+                <div className="bg-neutral p-4 rounded-lg">
+                  <p className="text-sm font-medium text-accent">Duration: ~10 minutes</p>
                 </div>
               </div>
             </div>
@@ -150,21 +150,21 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({ onComplete }
     },
     {
       id: "step2",
-      gradient: "from-purple-500 to-pink-600",
+      gradient: "from-primary-dark to-accent",
       content: (
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden min-h-[600px] shadow-stack">
-          <div className="bg-gradient-to-r from-green-50 to-blue-50 p-8 border-b border-gray-100">
+        <div className="bg-neutral rounded-3xl shadow-2xl overflow-hidden min-h-[600px] shadow-stack">
+          <div className="bg-gradient-to-r from-accent/10 to-primary-light/20 p-8 border-b border-primary-light">
             <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+              <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-primary-dark font-bold text-xl">
                 2
               </div>
-              <h2 className="text-3xl font-bold text-gray-900">Before You Start</h2>
+              <h2 className="text-3xl font-bold text-primary-dark">Before You Start</h2>
             </div>
           </div>
           <div className="p-8">
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-6">
-                <h3 className="text-xl font-semibold text-gray-800">Technical Requirements</h3>
+                <h3 className="text-xl font-semibold text-primary-dark">Technical Requirements</h3>
                 <div className="space-y-4">
                   {[
                     "Use headphones for the best experience",
@@ -173,34 +173,34 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({ onComplete }
                     "Be patient - responses take 10-15 seconds"
                   ].map((item, index) => (
                     <div key={index} className="flex items-start space-x-3">
-                      <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="w-6 h-6 bg-accent rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg className="w-3 h-3 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                       </div>
-                      <span className="text-gray-700">{item}</span>
+                      <span className="text-primary-dark">{item}</span>
                     </div>
                   ))}
                 </div>
               </div>
               <div className="space-y-6">
-                <div className="bg-gradient-to-br from-yellow-50 to-orange-50 p-6 rounded-2xl border border-yellow-200">
+                <div className="bg-gradient-to-br from-accent/20 to-primary-light/30 p-6 rounded-2xl border border-accent/30">
                   <div className="flex items-start space-x-3">
-                    <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-white font-bold">!</span>
+                    <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-primary-dark font-bold">!</span>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-800 mb-2">Important Note</h4>
-                      <p className="text-gray-700 text-sm">
+                      <h4 className="font-semibold text-primary-dark mb-2">Important Note</h4>
+                      <p className="text-primary-dark text-sm">
                         This is AI technology, not a human. It's sophisticated but may have limitations. 
                         Perfect for learning and experiencing modern customer service solutions.
                       </p>
                     </div>
                   </div>
                 </div>
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl border border-blue-200">
-                  <h4 className="font-semibold text-gray-800 mb-2">Privacy & Security</h4>
-                  <p className="text-gray-700 text-sm">
+                <div className="bg-gradient-to-br from-primary-light/20 to-accent/10 p-6 rounded-2xl border border-primary-light/30">
+                  <h4 className="font-semibold text-primary-dark mb-2">Privacy & Security</h4>
+                  <p className="text-primary-dark text-sm">
                     Your conversation data is processed securely and not stored permanently.
                   </p>
                 </div>
@@ -212,37 +212,37 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({ onComplete }
     },
     {
       id: "step3",
-      gradient: "from-indigo-500 to-purple-600",
+      gradient: "from-primary-light to-accent",
       content: (
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden min-h-[600px] shadow-stack">
-          <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-8 border-b border-gray-100">
+        <div className="bg-neutral rounded-3xl shadow-2xl overflow-hidden min-h-[600px] shadow-stack">
+          <div className="bg-gradient-to-r from-accent/10 to-primary-light/20 p-8 border-b border-primary-light">
             <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+              <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-primary-dark font-bold text-xl">
                 3
               </div>
-              <h2 className="text-3xl font-bold text-gray-900">How to Interact</h2>
+              <h2 className="text-3xl font-bold text-primary-dark">How to Interact</h2>
             </div>
           </div>
           <div className="p-8 space-y-8">
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-6">
-                <h3 className="text-xl font-semibold text-gray-800">Your Role</h3>
-                <div className="bg-blue-50 p-6 rounded-xl border border-blue-200">
+                <h3 className="text-xl font-semibold text-primary-dark">Your Role</h3>
+                <div className="bg-accent/20 p-6 rounded-xl border border-accent/30">
                   <div className="flex items-center space-x-3 mb-3">
-                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
+                      <svg className="w-4 h-4 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                       </svg>
                     </div>
-                    <p className="text-blue-800 font-medium">You are the customer</p>
+                    <p className="text-primary-dark font-medium">You are the customer</p>
                   </div>
-                  <p className="text-blue-700 text-sm">
+                  <p className="text-primary-dark text-sm">
                     Interact naturally with the AI service agent. Ask questions, request help, or simulate real customer scenarios.
                   </p>
                 </div>
               </div>
               <div className="space-y-6">
-                <h3 className="text-xl font-semibold text-gray-800">Getting Started</h3>
+                <h3 className="text-xl font-semibold text-primary-dark">Getting Started</h3>
                 <div className="space-y-3">
                   {[
                     'Say "START Training" to begin',
@@ -251,30 +251,30 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({ onComplete }
                     'End with "End session and give feedback"'
                   ].map((step, index) => (
                     <div key={index} className="flex items-start space-x-3">
-                      <span className="bg-purple-500 text-white text-xs font-bold px-2 py-1 rounded-full min-w-[20px] text-center">
+                      <span className="bg-accent text-primary-dark text-xs font-bold px-2 py-1 rounded-full min-w-[20px] text-center">
                         {index + 1}
                       </span>
-                      <span className="text-gray-700">{step}</span>
+                      <span className="text-primary-dark">{step}</span>
                     </div>
                   ))}
                 </div>
               </div>
             </div>
             
-            <div className="bg-gradient-to-r from-gray-50 to-blue-50 p-6 rounded-2xl">
-              <h4 className="font-semibold text-gray-800 mb-4">Sample Conversation Starters</h4>
+            <div className="bg-gradient-to-r from-primary-light/20 to-accent/10 p-6 rounded-2xl">
+              <h4 className="font-semibold text-primary-dark mb-4">Sample Conversation Starters</h4>
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <h5 className="font-medium text-gray-700">Service Inquiries</h5>
-                  <div className="space-y-1 text-sm text-gray-600">
+                  <h5 className="font-medium text-primary-dark">Service Inquiries</h5>
+                  <div className="space-y-1 text-sm text-primary-light">
                     <p>• "What plans do you offer?"</p>
                     <p>• "Can you explain your data packages?"</p>
                     <p>• "What's included in your premium plan?"</p>
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <h5 className="font-medium text-gray-700">Support Issues</h5>
-                  <div className="space-y-1 text-sm text-gray-600">
+                  <h5 className="font-medium text-primary-dark">Support Issues</h5>
+                  <div className="space-y-1 text-sm text-primary-light">
                     <p>• "I'm having connection issues"</p>
                     <p>• "Can you help with my billing?"</p>
                     <p>• "My internet is running slowly"</p>
@@ -288,31 +288,31 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({ onComplete }
     },
     {
       id: "ready",
-      gradient: "from-green-500 to-emerald-600",
+      gradient: "from-accent to-primary-dark",
       content: (
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden min-h-[600px] flex items-center shadow-stack">
+        <div className="bg-neutral rounded-3xl shadow-2xl overflow-hidden min-h-[600px] flex items-center shadow-stack">
           <div className="w-full p-12 text-center space-y-8">
             <div className="space-y-6">
-              <div className="w-24 h-24 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center mx-auto shadow-lg">
-                <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-24 h-24 bg-accent rounded-full flex items-center justify-center mx-auto shadow-lg">
+                <svg className="w-12 h-12 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
+              <h2 className="text-4xl md:text-5xl font-bold text-primary-dark">
                 Ready to Begin?
               </h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              <p className="text-xl text-primary-light max-w-2xl mx-auto">
                 Click the button below to start your interactive customer service session with our AI avatar.
               </p>
             </div>
             <div className="space-y-4">
               <Button 
                 onClick={onComplete}
-                className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-12 py-6 text-xl font-semibold rounded-full transition-all duration-300 transform hover:scale-105 shadow-xl"
+                className="bg-accent hover:bg-accent/80 text-primary-dark px-12 py-6 text-xl font-semibold rounded-full transition-all duration-300 transform hover:scale-105 shadow-xl"
               >
                 Start Avatar Session
               </Button>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-primary-light">
                 The avatar will appear and introduce itself
               </p>
             </div>
@@ -374,10 +374,10 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({ onComplete }
             key={index}
             className={`w-3 h-3 rounded-full transition-all duration-300 cursor-pointer ${
               index === activeCard
-                ? "bg-white scale-125 shadow-lg"
+                ? "bg-neutral scale-125 shadow-lg"
                 : index < activeCard
-                ? "bg-green-400"
-                : "bg-gray-400 bg-opacity-50"
+                ? "bg-accent"
+                : "bg-primary-light bg-opacity-50"
             }`}
             onClick={() => setActiveCard(index)}
           />
@@ -386,7 +386,7 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({ onComplete }
 
       {/* Background gradient that changes based on active card */}
       <div 
-        className={`fixed inset-0 bg-gradient-to-br ${cards[activeCard]?.gradient || 'from-blue-500 to-purple-600'} transition-all duration-700`}
+        className={`fixed inset-0 bg-gradient-to-br ${cards[activeCard]?.gradient || 'from-accent to-primary-light'} transition-all duration-700`}
       />
 
       {/* Navigation hint */}
@@ -410,7 +410,7 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({ onComplete }
       ))}
 
       {/* Debug info */}
-      <div className="fixed bottom-4 left-4 text-white bg-black bg-opacity-50 p-2 rounded text-sm">
+      <div className="fixed bottom-4 left-4 text-neutral bg-primary-dark bg-opacity-50 p-2 rounded text-sm">
         Card: {activeCard + 1}/{cards.length}
       </div>
     </div>

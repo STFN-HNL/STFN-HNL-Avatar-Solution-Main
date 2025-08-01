@@ -21,7 +21,7 @@ export const AvatarControls: React.FC = () => {
           className="
             w-16 h-16 rounded-full border-none transition-all duration-300 shadow-lg
             flex items-center justify-center hover:scale-105
-            bg-orange-500 hover:bg-orange-600
+            bg-red-500 hover:bg-red-600
           "
           onClick={interrupt}
         >

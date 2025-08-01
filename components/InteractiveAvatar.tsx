@@ -151,11 +151,11 @@ function InteractiveAvatar() {
         <div className="flex flex-row gap-6">
           {/* Avatar section - left side, smaller */}
           <div className="flex-shrink-0 w-[560px]">
-            <div className="flex flex-col rounded-xl bg-white shadow-lg border border-gray-200 overflow-hidden">
+            <div className="flex flex-col rounded-xl bg-neutral shadow-lg border border-primary-light overflow-hidden">
               <div className="relative w-full aspect-video overflow-hidden flex flex-col items-center justify-center">
                 <AvatarVideo ref={mediaStream} />
               </div>
-              <div className="flex flex-col gap-3 items-center justify-center p-4 border-t border-gray-200 w-full bg-gray-50">
+              <div className="flex flex-col gap-3 items-center justify-center p-4 border-t border-primary-light w-full bg-primary-light/10">
                 {error && (
                   <div className="text-red-600 text-sm p-3 bg-red-50 rounded-lg border border-red-200 w-full text-center">
                     {error}
@@ -173,26 +173,26 @@ function InteractiveAvatar() {
         </div>
       ) : (
         // Original layout when not connected - full width with preview image
-        <div className="flex flex-col rounded-xl bg-white shadow-lg border border-gray-200 overflow-hidden">
-          <div className="relative w-full aspect-video overflow-hidden flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50">
+        <div className="flex flex-col rounded-xl bg-neutral shadow-lg border border-primary-light overflow-hidden">
+          <div className="relative w-full aspect-video overflow-hidden flex flex-col items-center justify-center bg-gradient-to-br from-accent/10 to-primary-light/10">
             {sessionState !== StreamingAvatarSessionState.INACTIVE ? (
               <AvatarVideo ref={mediaStream} />
             ) : (
               // Show avatar preview image instead of config
               <div className="flex flex-col items-center justify-center space-y-4">
-                <div className="w-32 h-32 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center shadow-lg">
-                  <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-32 h-32 bg-accent rounded-full flex items-center justify-center shadow-lg">
+                  <svg className="w-16 h-16 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                 </div>
                 <div className="text-center">
-                  <h3 className="text-xl font-semibold text-gray-800">AI Avatar Ready</h3>
-                  <p className="text-gray-600">Click below to start your interactive session</p>
+                  <h3 className="text-xl font-semibold text-primary-dark">AI Avatar Ready</h3>
+                  <p className="text-primary-light">Click below to start your interactive session</p>
                 </div>
               </div>
             )}
           </div>
-          <div className="flex flex-col gap-3 items-center justify-center p-4 border-t border-gray-200 w-full bg-gray-50">
+          <div className="flex flex-col gap-3 items-center justify-center p-4 border-t border-primary-light w-full bg-primary-light/10">
             {error && (
               <div className="text-red-600 text-sm p-3 bg-red-50 rounded-lg border border-red-200 w-full text-center">
                 {error}
@@ -202,7 +202,7 @@ function InteractiveAvatar() {
               <div className="flex flex-row gap-4">
                 <Button 
                   onClick={() => startSession()}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 font-semibold rounded-full transition-all duration-300"
+                  className="bg-accent hover:bg-accent/80 text-primary-dark px-8 py-3 font-semibold rounded-full transition-all duration-300"
                 >
                   Start Voice Chat
                 </Button>

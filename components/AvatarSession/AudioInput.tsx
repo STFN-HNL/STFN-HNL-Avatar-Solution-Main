@@ -25,8 +25,8 @@ export const AudioInput: React.FC = () => {
           flex items-center justify-center disabled:opacity-50 hover:scale-105
           ${
             isMuted 
-              ? "bg-red-500 hover:bg-red-600" 
-              : "bg-green-500 hover:bg-green-600"
+                      ? "bg-red-500 hover:bg-red-600"
+        : "bg-accent hover:bg-accent/80"
           }
         `}
         disabled={isVoiceChatLoading}
