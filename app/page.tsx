@@ -1,15 +1,30 @@
 "use client";
 
 import InteractiveAvatar from "@/components/InteractiveAvatar";
+import { ScrollOnboarding } from "@/components/ScrollOnboarding";
+import { useState } from "react";
 
 export default function App() {
+  const [showOnboarding, setShowOnboarding] = useState(true);
+
+  const handleOnboardingComplete = () => {
+    setShowOnboarding(false);
+  };
+
   return (
-    <div className="w-screen h-screen flex flex-col items-center justify-center bg-gray-50">
-      <div className="w-[960px] flex flex-col items-start justify-start gap-5 mx-auto">
-        <div className="w-full">
-          <InteractiveAvatar />
+    <>
+      {showOnboarding ? (
+        <ScrollOnboarding onComplete={handleOnboardingComplete} />
+      ) : (
+        <div className="w-screen h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 via-white to-blue-50">
+          {/* Avatar appears after onboarding with smooth transition */}
+          <div className="w-[960px] flex flex-col items-start justify-start gap-5 mx-auto animate-fade-in">
+            <div className="w-full">
+              <InteractiveAvatar />
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }

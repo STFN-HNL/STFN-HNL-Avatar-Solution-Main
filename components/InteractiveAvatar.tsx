@@ -21,8 +21,6 @@ import { useVoiceChat } from "./logic/useVoiceChat";
 import { StreamingAvatarProvider, StreamingAvatarSessionState, useStreamingAvatarContext } from "./logic";
 import { LoadingIcon } from "./Icons";
 import { MessageHistory } from "./AvatarSession/MessageHistory";
-import { TelcoOnboarding } from "./TelcoOnboarding";
-
 import { AVATARS } from "@/app/lib/constants";
 
 const DEFAULT_CONFIG: StartAvatarRequest = {
@@ -50,7 +48,6 @@ function InteractiveAvatar() {
   const [config, setConfig] = useState<StartAvatarRequest>(DEFAULT_CONFIG);
   const [error, setError] = useState<string | null>(null);
   const [hasSpokenIntro, setHasSpokenIntro] = useState(false);
-  const [showOnboarding, setShowOnboarding] = useState(true);
 
   const mediaStream = useRef<HTMLVideoElement>(null);
 
@@ -132,9 +129,7 @@ function InteractiveAvatar() {
     }
   });
 
-  const handleOnboardingComplete = () => {
-    setShowOnboarding(false);
-  };
+
 
   useUnmount(() => {
     stopAvatar();
@@ -177,15 +172,24 @@ function InteractiveAvatar() {
           </div>
         </div>
       ) : (
-        // Original layout when not connected - full width
+        // Original layout when not connected - full width with preview image
         <div className="flex flex-col rounded-xl bg-white shadow-lg border border-gray-200 overflow-hidden">
-          <div className="relative w-full aspect-video overflow-hidden flex flex-col items-center justify-center">
+          <div className="relative w-full aspect-video overflow-hidden flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50">
             {sessionState !== StreamingAvatarSessionState.INACTIVE ? (
               <AvatarVideo ref={mediaStream} />
-            ) : showOnboarding ? (
-              <TelcoOnboarding onComplete={handleOnboardingComplete} />
             ) : (
-              <AvatarConfig config={config} onConfigChange={setConfig} />
+              // Show avatar preview image instead of config
+              <div className="flex flex-col items-center justify-center space-y-4">
+                <div className="w-32 h-32 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center shadow-lg">
+                  <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+                <div className="text-center">
+                  <h3 className="text-xl font-semibold text-gray-800">AI Avatar Ready</h3>
+                  <p className="text-gray-600">Click below to start your interactive session</p>
+                </div>
+              </div>
             )}
           </div>
           <div className="flex flex-col gap-3 items-center justify-center p-4 border-t border-gray-200 w-full bg-gray-50">
@@ -194,9 +198,12 @@ function InteractiveAvatar() {
                 {error}
               </div>
             )}
-            {sessionState === StreamingAvatarSessionState.INACTIVE && !showOnboarding && (
+            {sessionState === StreamingAvatarSessionState.INACTIVE && (
               <div className="flex flex-row gap-4">
-                <Button onClick={() => startSession()}>
+                <Button 
+                  onClick={() => startSession()}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 font-semibold rounded-full transition-all duration-300"
+                >
                   Start Voice Chat
                 </Button>
               </div>
