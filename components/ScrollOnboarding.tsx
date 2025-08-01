@@ -26,7 +26,7 @@ const StackedCard: React.FC<StackedCardProps> = ({
   let transform = "";
   let opacity = 1;
   let zIndex = 50 - index;
-  let pointerEvents = "none";
+  let pointerEvents: "none" | "auto" = "none";
   
   if (isPassed) {
     // Cards that have been passed - completely hide them
