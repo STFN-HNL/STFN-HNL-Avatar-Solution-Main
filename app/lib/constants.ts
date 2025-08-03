@@ -1,4 +1,4 @@
-import { CURRENT_CONFIG } from './environments';
+import { CURRENT_CONFIG } from "./environments";
 
 // Export environment-aware avatars
 export const AVATARS = CURRENT_CONFIG.avatars;
@@ -35,4 +35,4 @@ export const STT_LANGUAGE_LIST = [
 ];
 
 // Export environment configuration for use in components
-export { CURRENT_CONFIG } from './environments';
+export { CURRENT_CONFIG } from "./environments";

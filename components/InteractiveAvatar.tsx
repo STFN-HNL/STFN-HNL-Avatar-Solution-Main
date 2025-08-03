@@ -14,15 +14,17 @@ import { useMemoizedFn, useUnmount } from "ahooks";
 import Image from "next/image";
 
 import { Button } from "./Button";
-import { AvatarConfig } from "./AvatarConfig";
 import { AvatarVideo } from "./AvatarSession/AvatarVideo";
 import { useStreamingAvatarSession } from "./logic/useStreamingAvatarSession";
 import { AvatarControls } from "./AvatarSession/AvatarControls";
 import { useVoiceChat } from "./logic/useVoiceChat";
-import { StreamingAvatarProvider, StreamingAvatarSessionState, useStreamingAvatarContext } from "./logic";
+import {
+  StreamingAvatarProvider,
+  StreamingAvatarSessionState,
+  useStreamingAvatarContext,
+} from "./logic";
 import { LoadingIcon } from "./Icons";
 import { MessageHistory } from "./AvatarSession/MessageHistory";
-import { AVATARS } from "@/app/lib/constants";
 
 const DEFAULT_CONFIG: StartAvatarRequest = {
   quality: AvatarQuality.High,
@@ -63,7 +65,6 @@ function InteractiveAvatar() {
 
       return token;
     } catch (error) {
-
       throw error;
     }
   }
@@ -123,14 +124,15 @@ function InteractiveAvatar() {
           console.log(">>>>> Intro message sent");
         }, 2000);
       }
-
     } catch (error) {
       console.error("Error starting avatar session:", error);
-      setError(error instanceof Error ? error.message : "Failed to start avatar session. Please check your API configuration.");
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Failed to start avatar session. Please check your API configuration.",
+      );
     }
   });
-
-
 
   useUnmount(() => {
     stopAvatar();
@@ -168,7 +170,7 @@ function InteractiveAvatar() {
                   </div>
                 </div>
               </div>
-              
+
               {/* Transcript section - right side */}
               <div className="flex-1 flex flex-col">
                 <MessageHistory />
@@ -189,38 +191,63 @@ function InteractiveAvatar() {
                     // Show Jacob's avatar preview image
                     <div className="flex flex-col items-center justify-center space-y-6">
                       <div className="relative w-40 h-40 rounded-full overflow-hidden shadow-2xl border-4 border-accent bg-gradient-to-br from-accent/20 to-primary-light/20">
-                        <Image 
-                          src="/jacob-preview.jpg"
-                          alt="Jacob Fischer - AI Avatar"
-                          width={160}
-                          height={160}
-                          className="w-full h-full object-cover"
+                        <Image
                           priority
+                          alt="Jacob Fischer - AI Avatar"
+                          className="w-full h-full object-cover"
+                          height={160}
+                          src="/jacob-preview.jpg"
+                          width={160}
                           onError={(e) => {
                             // Fallback to generic icon if image fails to load
-                            console.log('Jacob avatar image not found, showing fallback');
+                            console.log(
+                              "Jacob avatar image not found, showing fallback",
+                            );
                             const target = e.target as HTMLImageElement;
-                            target.style.display = 'none';
-                            const fallback = target.parentElement?.querySelector('.fallback-icon');
+
+                            target.style.display = "none";
+                            const fallback =
+                              target.parentElement?.querySelector(
+                                ".fallback-icon",
+                              );
+
                             if (fallback) {
-                              (fallback as HTMLElement).style.display = 'flex';
+                              (fallback as HTMLElement).style.display = "flex";
                             }
                           }}
                         />
                         {/* Fallback icon */}
                         <div className="fallback-icon hidden absolute inset-0 w-full h-full bg-accent rounded-full flex items-center justify-center">
-                          <svg className="w-20 h-20 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          <svg
+                            className="w-20 h-20 text-primary-dark"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                            />
                           </svg>
                         </div>
                       </div>
                       <div className="text-center space-y-2">
-                        <h3 className="text-2xl font-bold text-primary-dark">Jacob Fischer</h3>
-                        <p className="text-primary-light font-medium">Fischer Accounting & Tax Consulting</p>
+                        <h3 className="text-2xl font-bold text-primary-dark">
+                          Jacob Fischer
+                        </h3>
+                        <p className="text-primary-light font-medium">
+                          Fischer Accounting & Tax Consulting
+                        </p>
                         <div className="bg-accent/20 rounded-full px-4 py-2 inline-block">
-                          <p className="text-primary-dark text-sm font-medium">AI Sales Training Partner</p>
+                          <p className="text-primary-dark text-sm font-medium">
+                            AI Sales Training Partner
+                          </p>
                         </div>
-                        <p className="text-primary-light text-sm mt-3">Ready to help you practice your telecom sales pitch</p>
+                        <p className="text-primary-light text-sm mt-3">
+                          Ready to help you practice your telecom sales pitch
+                        </p>
                       </div>
                     </div>
                   )}
@@ -231,7 +258,7 @@ function InteractiveAvatar() {
                       {error}
                     </div>
                   )}
-                  
+
                   {sessionState === StreamingAvatarSessionState.INACTIVE ? (
                     <Button
                       className="bg-primary-dark hover:bg-primary-dark/90 text-white px-12 py-6 text-xl font-medium rounded-xl transition-all duration-400 transform hover:scale-105 hover:shadow-heinrich-hover border border-primary-light/20"
@@ -239,7 +266,8 @@ function InteractiveAvatar() {
                     >
                       Start Training
                     </Button>
-                  ) : sessionState === StreamingAvatarSessionState.CONNECTING ? (
+                  ) : sessionState ===
+                    StreamingAvatarSessionState.CONNECTING ? (
                     <div className="flex items-center space-x-2">
                       <LoadingIcon />
                       <span>Starting Avatar...</span>

@@ -23,7 +23,9 @@ export function Select<T>(props: SelectProps<T>) {
       onOpenChange={setIsOpen}
     >
       <SelectPrimitive.Trigger className="w-full text-primary-dark text-sm bg-neutral border border-primary-light py-2 px-6 rounded-lg cursor-pointer flex items-center justify-between h-fit disabled:opacity-50 min-h-[36px] hover:border-primary-light/80 focus:border-accent focus:ring-2 focus:ring-accent/20 transition-colors duration-200">
-        <div className={`${props.value ? "text-primary-dark" : "text-primary-light"}`}>
+        <div
+          className={`${props.value ? "text-primary-dark" : "text-primary-light"}`}
+        >
           {props.value ? props.value : props.placeholder}
         </div>
         <ChevronDownIcon className="w-4 h-4 text-primary-light" />
@@ -42,8 +44,10 @@ export function Select<T>(props: SelectProps<T>) {
               return (
                 <div
                   key={props.renderOption(option)?.toString()}
-                            className={`py-2 px-4 cursor-pointer hover:bg-accent/10 outline-none text-sm transition-colors duration-150 ${
-            isSelected ? "text-accent bg-accent/20" : "text-primary-dark"
+                  className={`py-2 px-4 cursor-pointer hover:bg-accent/10 outline-none text-sm transition-colors duration-150 ${
+                    isSelected
+                      ? "text-accent bg-accent/20"
+                      : "text-primary-dark"
                   }`}
                   onClick={() => {
                     props.onSelect(option);

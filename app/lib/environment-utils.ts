@@ -1,4 +1,4 @@
-import { CURRENT_CONFIG, EnvironmentConfig } from './environments';
+import { CURRENT_CONFIG, EnvironmentConfig } from "./environments";
 
 export class EnvironmentUtils {
   static get config() {
@@ -9,11 +9,11 @@ export class EnvironmentUtils {
     return CURRENT_CONFIG.features[feature] || false;
   }
 
-  static getBranding(): EnvironmentConfig['branding'] {
+  static getBranding(): EnvironmentConfig["branding"] {
     return CURRENT_CONFIG.branding;
   }
 
   static getTitle(): string {
-    return this.getBranding()?.title || 'Avatar Solution';
+    return this.getBranding()?.title || "Avatar Solution";
   }
-} 
+}

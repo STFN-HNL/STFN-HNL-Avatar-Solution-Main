@@ -7,10 +7,7 @@ import { CloseIcon } from "../Icons";
 import { AudioInput } from "./AudioInput";
 
 export const AvatarControls: React.FC = () => {
-  const {
-    isVoiceChatLoading,
-    isVoiceChatActive,
-  } = useVoiceChat();
+  const { isVoiceChatLoading, isVoiceChatActive } = useVoiceChat();
   const { interrupt } = useInterrupt();
 
   return (
@@ -28,9 +25,7 @@ export const AvatarControls: React.FC = () => {
           >
             <CloseIcon className="text-white" size={24} />
           </button>
-          <span className="text-xs text-gray-600">
-            interrupt
-          </span>
+          <span className="text-xs text-gray-600">interrupt</span>
         </div>
       </div>
     </div>

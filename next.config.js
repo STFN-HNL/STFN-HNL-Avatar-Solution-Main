@@ -7,10 +7,8 @@ const nextConfig = {
   },
   // Ensure static files are properly handled
   trailingSlash: false,
-  // Optimize for production deployment
-  experimental: {
-    outputFileTracingRoot: undefined,
-  },
+  // Disable source maps in production for faster builds
+  productionBrowserSourceMaps: false,
 }
 
 module.exports = nextConfig

@@ -28,7 +28,7 @@ export const ENVIRONMENT_CONFIG: EnvironmentConfig = {
       name: "Ann Therapist",
     },
     {
-      avatar_id: "Shawn_Therapist_public", 
+      avatar_id: "Shawn_Therapist_public",
       name: "Shawn Therapist",
     },
     {
@@ -57,4 +57,4 @@ export const ENVIRONMENT_CONFIG: EnvironmentConfig = {
 };
 
 // Export the single configuration
-export const CURRENT_CONFIG = ENVIRONMENT_CONFIG; 
+export const CURRENT_CONFIG = ENVIRONMENT_CONFIG;

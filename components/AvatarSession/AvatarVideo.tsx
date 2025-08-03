@@ -18,20 +18,25 @@ export const AvatarVideo = forwardRef<HTMLVideoElement>(({}, ref) => {
   useEffect(() => {
     const video = ref as React.MutableRefObject<HTMLVideoElement | null>;
     const canvas = canvasRef.current;
-    
+
     if (!video?.current || !canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
+
     if (!ctx) return;
 
     const processFrame = () => {
       if (!video.current || video.current.videoWidth === 0) {
         animationIdRef.current = requestAnimationFrame(processFrame);
+
         return;
       }
 
       // Set canvas size to match video
-      if (canvas.width !== video.current.videoWidth || canvas.height !== video.current.videoHeight) {
+      if (
+        canvas.width !== video.current.videoWidth ||
+        canvas.height !== video.current.videoHeight
+      ) {
         canvas.width = video.current.videoWidth;
         canvas.height = video.current.videoHeight;
       }
@@ -53,7 +58,7 @@ export const AvatarVideo = forwardRef<HTMLVideoElement>(({}, ref) => {
         // Adjust these thresholds as needed for better results
         if (g > r * 1.5 && g > b * 1.5 && g > 100) {
           // Replace with white background
-          data[i] = 255;     // Red
+          data[i] = 255; // Red
           data[i + 1] = 255; // Green
           data[i + 2] = 255; // Blue
           // Keep alpha as is
@@ -74,15 +79,15 @@ export const AvatarVideo = forwardRef<HTMLVideoElement>(({}, ref) => {
       processFrame();
     };
 
-    video.current.addEventListener('playing', startProcessing);
-    video.current.addEventListener('loadeddata', startProcessing);
+    video.current.addEventListener("playing", startProcessing);
+    video.current.addEventListener("loadeddata", startProcessing);
 
     return () => {
       if (animationIdRef.current) {
         cancelAnimationFrame(animationIdRef.current);
       }
-      video.current?.removeEventListener('playing', startProcessing);
-      video.current?.removeEventListener('loadeddata', startProcessing);
+      video.current?.removeEventListener("playing", startProcessing);
+      video.current?.removeEventListener("loadeddata", startProcessing);
     };
   }, [ref, isLoaded]);
 
