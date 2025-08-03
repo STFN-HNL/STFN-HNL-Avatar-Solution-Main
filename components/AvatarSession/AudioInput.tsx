@@ -18,7 +18,7 @@ export const AudioInput: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col items-center gap-1">
       <button
         className={`
           relative w-16 h-16 rounded-full border-none transition-all duration-300 shadow-lg
@@ -43,6 +43,9 @@ export const AudioInput: React.FC = () => {
           <MicIcon className="text-white" size={24} />
         )}
       </button>
+      <span className="text-xs text-gray-600">
+        {isMuted ? "unmute" : "mute"}
+      </span>
     </div>
   );
 };

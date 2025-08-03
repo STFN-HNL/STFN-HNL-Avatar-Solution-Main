@@ -17,16 +17,21 @@ export const AvatarControls: React.FC = () => {
     <div className="flex flex-col gap-3 relative w-full items-center">
       <div className="flex items-center gap-6">
         <AudioInput />
-        <button
-          className="
-            w-16 h-16 rounded-full border-none transition-all duration-300 shadow-lg
-            flex items-center justify-center hover:scale-105
-            bg-red-500 hover:bg-red-600
-          "
-          onClick={interrupt}
-        >
-          <CloseIcon className="text-white" size={24} />
-        </button>
+        <div className="flex flex-col items-center gap-1">
+          <button
+            className="
+              w-16 h-16 rounded-full border-none transition-all duration-300 shadow-lg
+              flex items-center justify-center hover:scale-105
+              bg-orange-500 hover:bg-orange-600
+            "
+            onClick={interrupt}
+          >
+            <CloseIcon className="text-white" size={24} />
+          </button>
+          <span className="text-xs text-gray-600">
+            interrupt
+          </span>
+        </div>
       </div>
     </div>
   );
