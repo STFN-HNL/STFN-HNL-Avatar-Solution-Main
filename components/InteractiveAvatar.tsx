@@ -145,76 +145,87 @@ function InteractiveAvatar() {
   }, [mediaStream, stream]);
 
   return (
-    <div className="w-full flex flex-col gap-4">
+    <>
       {sessionState === StreamingAvatarSessionState.CONNECTED ? (
-        // Side-by-side layout when connected
-        <div className="flex flex-row gap-6">
-          {/* Avatar section - left side, smaller */}
-          <div className="flex-shrink-0 w-[560px]">
-            <div className="flex flex-col rounded-xl bg-neutral shadow-lg border border-primary-light overflow-hidden">
-              <div className="relative w-full aspect-video overflow-hidden flex flex-col items-center justify-center">
-                <AvatarVideo ref={mediaStream} />
-              </div>
-              <div className="flex flex-col gap-3 items-center justify-center p-4 border-t border-primary-light w-full bg-primary-light/10">
-                {error && (
-                  <div className="text-red-600 text-sm p-3 bg-red-50 rounded-lg border border-red-200 w-full text-center">
-                    {error}
+        // Full-screen layout when connected - back to original dimensions
+        <div className="w-screen h-screen flex flex-col items-center justify-center bg-gradient-to-br from-neutral via-primary-light/10 to-accent/10">
+          <div className="w-[960px] flex flex-col items-start justify-start gap-5 mx-auto">
+            <div className="w-full flex flex-row gap-6">
+              {/* Avatar section - left side, original size */}
+              <div className="flex-shrink-0 w-[560px]">
+                <div className="flex flex-col rounded-xl bg-neutral shadow-lg border border-primary-light overflow-hidden">
+                  <div className="relative w-full aspect-video overflow-hidden flex flex-col items-center justify-center">
+                    <AvatarVideo ref={mediaStream} />
                   </div>
-                )}
-                <AvatarControls />
+                  <div className="flex flex-col gap-3 items-center justify-center p-4 border-t border-primary-light w-full bg-primary-light/10">
+                    {error && (
+                      <div className="text-red-600 text-sm p-3 bg-red-50 rounded-lg border border-red-200 w-full text-center">
+                        {error}
+                      </div>
+                    )}
+                    <AvatarControls />
+                  </div>
+                </div>
+              </div>
+              
+              {/* Transcript section - right side */}
+              <div className="flex-1 flex flex-col">
+                <MessageHistory />
               </div>
             </div>
           </div>
-          
-          {/* Transcript section - right side */}
-          <div className="flex-1 flex flex-col">
-            <MessageHistory />
-          </div>
         </div>
       ) : (
-        // Original layout when not connected - full width with preview image
-        <div className="flex flex-col rounded-xl bg-neutral shadow-lg border border-primary-light overflow-hidden">
-          <div className="relative w-full aspect-video overflow-hidden flex flex-col items-center justify-center bg-gradient-to-br from-accent/10 to-primary-light/10">
-            {sessionState !== StreamingAvatarSessionState.INACTIVE ? (
-              <AvatarVideo ref={mediaStream} />
-            ) : (
-              // Show avatar preview image instead of config
-              <div className="flex flex-col items-center justify-center space-y-4">
-                <div className="w-32 h-32 bg-accent rounded-full flex items-center justify-center shadow-lg">
-                  <svg className="w-16 h-16 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
+        // Card layout when not connected - matches onboarding cards positioning exactly
+        <div className="fixed inset-0 flex items-center justify-center p-6">
+          <div className="max-w-5xl w-full">
+            <div className="bg-neutral rounded-3xl shadow-2xl overflow-hidden h-[600px] shadow-stack">
+              <div className="flex flex-col h-full">
+                <div className="relative w-full h-[400px] overflow-hidden flex flex-col items-center justify-center bg-gradient-to-br from-accent/10 to-primary-light/10 rounded-t-3xl">
+                  {sessionState !== StreamingAvatarSessionState.INACTIVE ? (
+                    <AvatarVideo ref={mediaStream} />
+                  ) : (
+                    // Show avatar preview image instead of config
+                    <div className="flex flex-col items-center justify-center space-y-4">
+                      <div className="w-24 h-24 bg-accent rounded-full flex items-center justify-center shadow-lg">
+                        <svg className="w-12 h-12 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                      </div>
+                      <div className="text-center">
+                        <h3 className="text-lg font-semibold text-primary-dark">AI Avatar Ready</h3>
+                        <p className="text-primary-light text-sm">Click below to start your interactive session</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div className="text-center">
-                  <h3 className="text-xl font-semibold text-primary-dark">AI Avatar Ready</h3>
-                  <p className="text-primary-light">Click below to start your interactive session</p>
+                <div className="flex flex-col gap-3 items-center justify-center p-4 border-t border-primary-light w-full bg-primary-light/10 flex-1">
+                  {error && (
+                    <div className="text-red-600 text-sm p-3 bg-red-50 rounded-lg border border-red-200 w-full text-center">
+                      {error}
+                    </div>
+                  )}
+                  
+                  {sessionState === StreamingAvatarSessionState.INACTIVE ? (
+                    <Button
+                      className="px-6 py-3 bg-accent hover:bg-accent/80 text-primary-dark font-semibold rounded-xl transition-colors"
+                      onClick={startSession}
+                    >
+                      Start Avatar Session
+                    </Button>
+                  ) : sessionState === StreamingAvatarSessionState.CONNECTING ? (
+                    <div className="flex items-center space-x-2">
+                      <LoadingIcon />
+                      <span>Starting Avatar...</span>
+                    </div>
+                  ) : null}
                 </div>
               </div>
-            )}
-          </div>
-          <div className="flex flex-col gap-3 items-center justify-center p-4 border-t border-primary-light w-full bg-primary-light/10">
-            {error && (
-              <div className="text-red-600 text-sm p-3 bg-red-50 rounded-lg border border-red-200 w-full text-center">
-                {error}
-              </div>
-            )}
-            {sessionState === StreamingAvatarSessionState.INACTIVE && (
-              <div className="flex flex-row gap-4">
-                <Button 
-                  onClick={() => startSession()}
-                  className="bg-accent hover:bg-accent/80 text-primary-dark px-8 py-3 font-semibold rounded-full transition-all duration-300"
-                >
-                  Start Voice Chat
-                </Button>
-              </div>
-            )}
-            {sessionState === StreamingAvatarSessionState.CONNECTING && (
-              <LoadingIcon />
-            )}
+            </div>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 
