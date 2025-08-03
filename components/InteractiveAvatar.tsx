@@ -11,6 +11,7 @@ import {
 } from "@heygen/streaming-avatar";
 import { useEffect, useRef, useState } from "react";
 import { useMemoizedFn, useUnmount } from "ahooks";
+import Image from "next/image";
 
 import { Button } from "./Button";
 import { AvatarConfig } from "./AvatarConfig";
@@ -185,16 +186,41 @@ function InteractiveAvatar() {
                   {sessionState !== StreamingAvatarSessionState.INACTIVE ? (
                     <AvatarVideo ref={mediaStream} />
                   ) : (
-                    // Show avatar preview image instead of config
-                    <div className="flex flex-col items-center justify-center space-y-4">
-                      <div className="w-24 h-24 bg-accent rounded-full flex items-center justify-center shadow-lg">
-                        <svg className="w-12 h-12 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
+                    // Show Jacob's avatar preview image
+                    <div className="flex flex-col items-center justify-center space-y-6">
+                      <div className="relative w-40 h-40 rounded-full overflow-hidden shadow-2xl border-4 border-accent bg-gradient-to-br from-accent/20 to-primary-light/20">
+                        <Image 
+                          src="/jacob-preview.jpg"
+                          alt="Jacob Fischer - AI Avatar"
+                          width={160}
+                          height={160}
+                          className="w-full h-full object-cover"
+                          priority
+                          onError={(e) => {
+                            // Fallback to generic icon if image fails to load
+                            console.log('Jacob avatar image not found, showing fallback');
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = 'none';
+                            const fallback = target.parentElement?.querySelector('.fallback-icon');
+                            if (fallback) {
+                              (fallback as HTMLElement).style.display = 'flex';
+                            }
+                          }}
+                        />
+                        {/* Fallback icon */}
+                        <div className="fallback-icon hidden absolute inset-0 w-full h-full bg-accent rounded-full flex items-center justify-center">
+                          <svg className="w-20 h-20 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          </svg>
+                        </div>
                       </div>
-                      <div className="text-center">
-                        <h3 className="text-lg font-semibold text-primary-dark">AI Avatar Ready</h3>
-                        <p className="text-primary-light text-sm">Click below to start your interactive session</p>
+                      <div className="text-center space-y-2">
+                        <h3 className="text-2xl font-bold text-primary-dark">Jacob Fischer</h3>
+                        <p className="text-primary-light font-medium">Fischer Accounting & Tax Consulting</p>
+                        <div className="bg-accent/20 rounded-full px-4 py-2 inline-block">
+                          <p className="text-primary-dark text-sm font-medium">AI Sales Training Partner</p>
+                        </div>
+                        <p className="text-primary-light text-sm mt-3">Ready to help you practice your telecom sales pitch</p>
                       </div>
                     </div>
                   )}
@@ -208,10 +234,10 @@ function InteractiveAvatar() {
                   
                   {sessionState === StreamingAvatarSessionState.INACTIVE ? (
                     <Button
-                      className="px-6 py-3 bg-accent hover:bg-accent/80 text-primary-dark font-semibold rounded-xl transition-colors"
+                      className="bg-primary-dark hover:bg-primary-dark/90 text-white px-12 py-6 text-xl font-medium rounded-xl transition-all duration-400 transform hover:scale-105 hover:shadow-heinrich-hover border border-primary-light/20"
                       onClick={startSession}
                     >
-                      Start Avatar Session
+                      Start Training
                     </Button>
                   ) : sessionState === StreamingAvatarSessionState.CONNECTING ? (
                     <div className="flex items-center space-x-2">
