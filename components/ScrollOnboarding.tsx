@@ -227,7 +227,7 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({ onComplete }
                         {index + 1}
                       </span>
                       <div>
-                        <span className="text-primary-dark font-medium">· {step.phase}</span>
+                        <span className="text-primary-dark font-medium">{step.phase}</span>
                         <p className="text-primary-dark/70">{step.description}</p>
                       </div>
                     </div>
@@ -262,8 +262,8 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({ onComplete }
             <p className="text-primary-dark/80 mb-4 leading-relaxed">
               Jacob runs a successful accounting firm, so he'll challenge you just like real prospects do. Here are the types of concerns you can expect:
             </p>
-            <div className="flex-1">
-              <div className="grid grid-cols-2 gap-4 h-full">
+            <div className="mb-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-3">
                   <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-4 rounded-xl h-fit border border-primary-light/20 hover:shadow-paper transition-all duration-400">
                     <h4 className="font-medium text-primary-dark mb-2">Cost Concerns:</h4>
@@ -286,11 +286,9 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({ onComplete }
                 </div>
               </div>
             </div>
-            <div className="bg-gradient-to-br from-primary-light/15 to-accent/10 p-4 rounded-xl mt-4 border border-primary-light/20">
-              <p className="text-primary-dark font-medium">
-                Remember: Objections aren't rejections – they're buying signals. Jacob is telling you exactly what he needs to hear to move forward.
-              </p>
-            </div>
+            <p className="text-primary-dark font-medium">
+              Remember: Objections aren't rejections – they're buying signals. Jacob is telling you exactly what he needs to hear to move forward.
+            </p>
           </div>
         </div>
       ),
