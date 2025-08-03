@@ -11,7 +11,7 @@ module.exports = {
           dark: '#1B1D1E',
           light: '#C1B9AD',
         },
-        accent: '#CAD5AC',
+        accent: '#CAD3AC', // Updated to exact Heinrich Co. sage green
         neutral: '#F2F2F2',
         // Keep some essential grays for subtle UI elements
         gray: {
@@ -30,6 +30,20 @@ module.exports = {
       fontFamily: {
         sans: ["var(--font-sans)"],
         mono: ["var(--font-geist-mono)"],
+      },
+      // Heinrich Co. inspired animations
+      transitionDuration: {
+        '400': '400ms',
+      },
+      transitionTimingFunction: {
+        'sophisticated': 'cubic-bezier(0.4, 0.0, 0.2, 1)',
+      },
+      // Premium shadows
+      boxShadow: {
+        'heinrich': '0 10px 40px rgba(27, 29, 30, 0.1)',
+        'heinrich-hover': '0 15px 50px rgba(27, 29, 30, 0.15)',
+        'paper': '0 4px 20px rgba(193, 185, 173, 0.2)',
+        'stack': '0 8px 32px rgba(27, 29, 30, 0.12)',
       },
     },
   },
