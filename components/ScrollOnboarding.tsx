@@ -3,6 +3,9 @@
 import React, { useEffect, useState } from "react";
 
 import { Button } from "./Button";
+import { Select } from "./Select";
+import { useLanguage } from "./logic";
+import { STT_LANGUAGE_LIST } from "@/app/lib/constants";
 
 interface ScrollOnboardingProps {
   onComplete: () => void;
@@ -69,8 +72,120 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
   onComplete,
 }) => {
   const [activeCard, setActiveCard] = useState(0);
+  const { selectedLanguage, setSelectedLanguage, t } = useLanguage();
+
+  // Supported languages filtered to match avatar capabilities
+  const SUPPORTED_LANGUAGES = STT_LANGUAGE_LIST.filter(lang => 
+    ['en', 'nl', 'tr', 'pt', 'es'].includes(lang.value)
+  );
 
   const cards = [
+    {
+      id: "training-welcome",
+      gradient: "from-primary-dark/25 to-accent/25",
+      content: (
+        <div className="bg-neutral rounded-2xl shadow-heinrich overflow-hidden min-h-[600px] max-h-[700px] overflow-y-auto border border-primary-light/20">
+          {/* Welcome header */}
+          <div className="bg-gradient-to-r from-primary-dark/15 to-accent/10 p-8 border-b border-primary-light/30">
+            <div className="flex items-center justify-between gap-6">
+              <div className="flex items-center space-x-4 min-w-0 flex-1">
+                <div className="w-16 h-16 bg-gradient-to-br from-accent to-accent/80 rounded-xl flex items-center justify-center text-white font-bold text-2xl shadow-paper flex-shrink-0">
+                  🎯
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-3xl font-light text-primary-dark tracking-wide break-words">
+                    {t('welcomeTitle')}
+                  </h2>
+                  <p className="text-primary-dark/70 text-lg mt-1 break-words">
+                    {t('welcomeSubtitle')}
+                  </p>
+                </div>
+              </div>
+              
+              {/* Language Selector */}
+              <div className="w-64 flex-shrink-0">
+                <label className="block text-sm font-medium text-primary-dark mb-2">
+                  {t('languageLabel')}
+                </label>
+                <Select
+                  options={SUPPORTED_LANGUAGES}
+                  renderOption={(option) => option.label}
+                  value={
+                    SUPPORTED_LANGUAGES.find((option) => option.value === selectedLanguage)
+                      ?.label
+                  }
+                  onSelect={(option) => setSelectedLanguage(option.value as any)}
+                  isSelected={(option) => option.value === selectedLanguage}
+                  placeholder={t('selectLanguage')}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="p-8 flex-1">
+            <div className="space-y-6 h-full flex flex-col">
+              <div className="bg-gradient-to-br from-accent/15 to-primary-light/10 p-6 rounded-xl border border-accent/30">
+                <h3 className="text-2xl font-semibold text-primary-dark mb-3">
+                  {t('transformSkills')}
+                </h3>
+                <p className="text-primary-dark/80 leading-relaxed">
+                  {t('transformDescription')}
+                </p>
+              </div>
+              
+              <div className="flex-1 space-y-4">
+                <h4 className="text-xl font-medium text-primary-dark">
+                  {t('whatMakesSpecial')}
+                </h4>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-3">
+                    <div className="flex items-start space-x-3">
+                      <div className="w-6 h-6 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-2 h-2 bg-accent rounded-full"></div>
+                      </div>
+                      <p className="text-primary-dark/80">
+                        <strong>{t('realisticInteractions')}</strong> {t('realisticDescription')}
+                      </p>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <div className="w-6 h-6 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-2 h-2 bg-accent rounded-full"></div>
+                      </div>
+                      <p className="text-primary-dark/80">
+                        <strong>{t('instantFeedback')}</strong> {t('feedbackDescription')}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-start space-x-3">
+                      <div className="w-6 h-6 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-2 h-2 bg-accent rounded-full"></div>
+                      </div>
+                      <p className="text-primary-dark/80">
+                        <strong>{t('safeEnvironment')}</strong> {t('safeDescription')}
+                      </p>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <div className="w-6 h-6 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-2 h-2 bg-accent rounded-full"></div>
+                      </div>
+                      <p className="text-primary-dark/80">
+                        <strong>{t('skillBuilding')}</strong> {t('skillDescription')}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-primary-light/15 to-accent/10 p-6 rounded-xl border border-primary-light/20">
+                <p className="text-primary-dark font-medium text-center leading-relaxed break-words hyphens-auto">
+                  {t('readyToBuild')}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ),
+    },
     {
       id: "welcome",
       gradient: "from-accent/20 to-primary-light/30",
@@ -80,34 +195,29 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
           <div className="bg-gradient-to-r from-primary-light/10 to-accent/5 p-8 border-b border-primary-light/30">
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center text-primary-dark font-bold text-xl shadow-paper">
-                1
+                2
               </div>
               <h2 className="text-3xl font-light text-primary-dark tracking-wide">
-                Meet Your Practice Partner
+                {t('meetPracticePartner')}
               </h2>
             </div>
           </div>
           <div className="p-8 flex-1">
             <div className="space-y-6 h-full flex flex-col">
               <h3 className="text-2xl font-medium text-primary-dark">
-                Ready to Master Sales Conversations?
+                {t('readyToMasterSales')}
               </h3>
               <div className="flex-1">
                 <p className="text-primary-dark/80 mb-4 leading-relaxed">
-                  Meet Jacob Fischer, owner of Fischer Accounting & Tax
-                  Consulting. He's analytical, cost-conscious, and protective of
-                  sensitive client data.
+                  {t('meetJacobFischer')}
                 </p>
                 <p className="text-primary-dark/70 leading-relaxed">
-                  Practice authentic sales conversations that build your
-                  confidence and sharpen your objection-handling skills with a
-                  realistic business prospect.
+                  {t('practiceAuthentic')}
                 </p>
               </div>
               <div className="bg-gradient-to-br from-primary-light/15 to-accent/10 p-6 rounded-xl border border-primary-light/20">
                 <p className="text-primary-dark font-medium">
-                  Start your journey to sales excellence with personalized
-                  training scenarios.
+                  {t('startJourneyExcellence')}
                 </p>
               </div>
             </div>
@@ -123,34 +233,29 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
           <div className="bg-gradient-to-r from-primary-light/10 to-accent/5 p-8 border-b border-primary-light/30">
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center text-primary-dark font-bold text-xl shadow-paper">
-                2
+                3
               </div>
               <h2 className="text-3xl font-light text-primary-dark tracking-wide">
-                Before You Start
+                {t('beforeYouStart')}
               </h2>
             </div>
           </div>
           <div className="p-8 flex-1">
             <div className="space-y-6 h-full flex flex-col">
               <h3 className="text-2xl font-medium text-primary-dark">
-                Set Yourself Up for Success
+                {t('setupSuccess')}
               </h3>
               <div className="flex-1 space-y-4">
                 <p className="text-primary-dark/80 leading-relaxed">
-                  For the best training experience, use headphones and ensure
-                  you have a stable internet connection. You'll need to allow
-                  microphone access when prompted.
+                  {t('bestExperience')}
                 </p>
                 <p className="text-primary-dark/80 leading-relaxed">
-                  Jacob processes your responses naturally - just give him 10-15
-                  seconds to reply, just like a real prospect would.
+                  {t('jacobProcesses')}
                 </p>
               </div>
               <div className="bg-gradient-to-br from-primary-light/15 to-accent/10 p-6 rounded-xl border border-primary-light/20">
                 <p className="text-primary-dark font-medium">
-                  Your conversation data is processed securely and not stored
-                  permanently. Now you're ready to say "START TRAINING" and
-                  begin!
+                  {t('conversationData')}
                 </p>
               </div>
             </div>
@@ -166,56 +271,52 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
           <div className="bg-gradient-to-r from-primary-light/10 to-accent/5 p-8 border-b border-primary-light/30">
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center text-primary-dark font-bold text-xl shadow-paper">
-                3
+                4
               </div>
               <h2 className="text-3xl font-light text-primary-dark tracking-wide">
-                Choose Your Challenge Level
+                {t('challengeLevel')}
               </h2>
             </div>
           </div>
           <div className="p-6 flex-1">
             <div className="space-y-4 h-full flex flex-col">
               <h3 className="text-2xl font-medium text-primary-dark">
-                Which Jacob Will You Face Today?
+                {t('whichJacob')}
               </h3>
               <div className="flex-1">
                 <p className="text-primary-dark/80 mb-3 leading-relaxed">
-                  Jacob adapts his personality to match the conversations you
-                  need to master:
+                  {t('jacobAdapts')}
                 </p>
                 <div className="space-y-2">
                   <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-3 rounded-xl border border-primary-light/20 hover:shadow-paper transition-all duration-400">
                     <h4 className="font-medium text-primary-dark mb-1">
-                      • Cautious Jacob - Risk-Averse & Security-Focused
+                      {t('cautiousJacob')}
                     </h4>
                     <p className="text-primary-dark/70 text-sm">
-                      Perfect for practicing with compliance-conscious
-                      prospects.
+                      {t('cautiousDescription')}
                     </p>
                   </div>
                   <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-3 rounded-xl border border-primary-light/20 hover:shadow-paper transition-all duration-400">
                     <h4 className="font-medium text-primary-dark mb-1">
-                      • Dominant Jacob - Hard Negotiator & Price-Focused
+                      {t('dominantJacob')}
                     </h4>
                     <p className="text-primary-dark/70 text-sm">
-                      Ideal for building confidence with demanding,
-                      price-sensitive prospects.
+                      {t('dominantDescription')}
                     </p>
                   </div>
                   <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-3 rounded-xl border border-primary-light/20 hover:shadow-paper transition-all duration-400">
                     <h4 className="font-medium text-primary-dark mb-1">
-                      • Analytical Jacob - Data-Driven Decision Maker
+                      {t('analyticalJacob')}
                     </h4>
                     <p className="text-primary-dark/70 text-sm">
-                      Great for learning to present compelling ROI and detailed
-                      comparisons.
+                      {t('analyticalDescription')}
                     </p>
                   </div>
                 </div>
               </div>
               <div className="bg-gradient-to-br from-primary-light/15 to-accent/10 p-4 rounded-xl border border-primary-light/20">
                 <p className="text-primary-dark font-medium">
-                  Choose the style that matches your current learning goals.
+                  {t('chooseStyle')}
                 </p>
               </div>
             </div>
@@ -231,43 +332,39 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
           <div className="bg-gradient-to-r from-primary-light/10 to-accent/5 p-8 border-b border-primary-light/30">
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center text-primary-dark font-bold text-xl shadow-paper">
-                4
+                5
               </div>
               <h2 className="text-3xl font-light text-primary-dark tracking-wide">
-                Navigate Like a Pro
+                {t('navigatePro')}
               </h2>
             </div>
           </div>
           <div className="p-8 flex-1">
             <div className="space-y-6 h-full flex flex-col">
               <h3 className="text-2xl font-medium text-primary-dark">
-                Your Roadmap to Sales Success
+                {t('roadmapSuccess')}
               </h3>
               <div className="flex-1">
                 <p className="text-primary-dark/80 mb-4 leading-relaxed">
-                  Follow this natural progression with Jacob:
+                  {t('followProgression')}
                 </p>
                 <div className="space-y-3">
                   {[
                     {
-                      phase: "Discovery Phase",
-                      description:
-                        "Ask about his current setup, pain points, and security concerns.",
+                      phase: t('discoveryPhase'),
+                      description: t('discoveryDescription'),
                     },
                     {
-                      phase: "Solution Presentation",
-                      description:
-                        "Connect your features directly to the problems he described.",
+                      phase: t('solutionPresentation'),
+                      description: t('solutionDescription'),
                     },
                     {
-                      phase: "Objection Mastery",
-                      description:
-                        "Handle his concerns about cost, security, and reliability authentically.",
+                      phase: t('objectionMastery'),
+                      description: t('objectionDescription'),
                     },
                     {
-                      phase: "Commitment Close",
-                      description:
-                        "Guide the conversation toward next steps and ask for commitment.",
+                      phase: t('commitmentClose'),
+                      description: t('commitmentDescription'),
                     },
                   ].map((step, index) => (
                     <div key={index} className="flex items-start space-x-3">
@@ -288,7 +385,7 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
               </div>
               <div className="bg-gradient-to-br from-primary-light/15 to-accent/10 p-6 rounded-xl border border-primary-light/20">
                 <p className="text-primary-dark font-medium">
-                  Master each phase to become a confident sales professional.
+                  {t('masterPhases')}
                 </p>
               </div>
             </div>
@@ -304,68 +401,62 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
           <div className="bg-gradient-to-r from-primary-light/10 to-accent/5 p-8 border-b border-primary-light/30">
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center text-primary-dark font-bold text-xl shadow-paper">
-                5
+                6
               </div>
               <h2 className="text-3xl font-light text-primary-dark tracking-wide">
-                Expect the Unexpected
+                {t('expectUnexpectedTitle')}
               </h2>
             </div>
           </div>
           <div className="p-6 flex-1 h-full flex flex-col">
             <h3 className="text-2xl font-medium text-primary-dark mb-4">
-              Master the Art of Objection Handling
+              {t('masterObjectionsTitle')}
             </h3>
             <p className="text-primary-dark/80 mb-4 leading-relaxed">
-              Jacob runs a successful accounting firm, so he'll challenge you
-              just like real prospects do. Here are the types of concerns you
-              can expect:
+              {t('jacobChallenges')}
             </p>
             <div className="mb-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-3">
                   <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-4 rounded-xl h-fit border border-primary-light/20 hover:shadow-paper transition-all duration-400">
                     <h4 className="font-medium text-primary-dark mb-2">
-                      Cost Concerns:
+                      {t('costConcernsTitle')}
                     </h4>
                     <p className="text-primary-dark/70 italic">
-                      "Your competitors quoted 30% less. Why should I pay more?"
+                      {t('costExample2')}
                     </p>
                   </div>
                   <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-4 rounded-xl h-fit border border-primary-light/20 hover:shadow-paper transition-all duration-400">
                     <h4 className="font-medium text-primary-dark mb-2">
-                      Security Worries:
+                      {t('securityWorries')}
                     </h4>
                     <p className="text-primary-dark/70 italic">
-                      "One data breach could destroy my firm. How do you
-                      guarantee protection?"
+                      {t('securityExample')}
                     </p>
                   </div>
                 </div>
                 <div className="space-y-3">
                   <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-4 rounded-xl h-fit border border-primary-light/20 hover:shadow-paper transition-all duration-400">
                     <h4 className="font-medium text-primary-dark mb-2">
-                      Reliability Questions:
+                      {t('reliabilityQuestions')}
                     </h4>
                     <p className="text-primary-dark/70 italic">
-                      "What happens if your service goes down during tax
-                      season?"
+                      {t('reliabilityExample')}
                     </p>
                   </div>
                   <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-4 rounded-xl h-fit border border-primary-light/20 hover:shadow-paper transition-all duration-400">
                     <h4 className="font-medium text-primary-dark mb-2">
-                      Status Quo Bias:
+                      {t('statusQuoBias')}
                     </h4>
                     <p className="text-primary-dark/70 italic">
-                      "My current provider works fine. Why should I switch?"
+                      {t('statusQuoExample')}
                     </p>
                   </div>
                 </div>
               </div>
             </div>
             <p className="text-primary-dark font-medium">
-              Remember: Objections aren't rejections – they're buying signals.
-              Jacob is telling you exactly what he needs to hear to move
-              forward.
+              {t('objectionsAreSignals')}
             </p>
           </div>
         </div>
@@ -379,62 +470,55 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
           <div className="bg-gradient-to-r from-primary-light/10 to-accent/5 p-8 border-b border-primary-light/30">
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center text-primary-dark font-bold text-xl shadow-paper">
-                6
+                7
               </div>
               <h2 className="text-3xl font-light text-primary-dark tracking-wide">
-                Conversation Excellence
+                {t('conversationExcellence')}
               </h2>
             </div>
           </div>
           <div className="p-6 flex-1 h-full flex flex-col">
             <h3 className="text-2xl font-medium text-primary-dark mb-4">
-              Make Every Word Count
+              {t('makeWordsCount')}
             </h3>
             <p className="text-primary-dark/80 mb-4 leading-relaxed">
-              Great salespeople make conversations feel natural and
-              consultative. Here's how to shine with Jacob:
+              {t('salesNatural')}
             </p>
             <div className="flex-1">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-4">
                   <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-4 rounded-xl border border-primary-light/20 hover:shadow-paper transition-all duration-400">
                     <h4 className="font-medium text-primary-dark mb-2">
-                      Listen Actively:
+                      {t('listenActivelyTitle')}
                     </h4>
                     <p className="text-primary-dark/70">
-                      When Jacob shares concerns, acknowledge them before
-                      responding. Use phrases like "I understand that's
-                      important to you..."
+                      {t('listenActivelyDesc')}
                     </p>
                   </div>
                   <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-4 rounded-xl border border-primary-light/20 hover:shadow-paper transition-all duration-400">
                     <h4 className="font-medium text-primary-dark mb-2">
-                      Ask Smart Questions:
+                      {t('askSmartQuestionsTitle')}
                     </h4>
                     <p className="text-primary-dark/70">
-                      Go beyond surface-level features. Explore the emotional
-                      impact: "How do you feel when your current system has
-                      issues during busy season?"
+                      {t('askSmartQuestionsDesc')}
                     </p>
                   </div>
                 </div>
                 <div className="space-y-4">
                   <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-4 rounded-xl border border-primary-light/20 hover:shadow-paper transition-all duration-400">
                     <h4 className="font-medium text-primary-dark mb-2">
-                      Paint the Picture:
+                      {t('paintPictureTitle')}
                     </h4>
                     <p className="text-primary-dark/70">
-                      Don't just sell telecom services – sell peace of mind,
-                      operational efficiency, and competitive advantage.
+                      {t('paintPictureDesc')}
                     </p>
                   </div>
                   <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-4 rounded-xl border border-primary-light/20 hover:shadow-paper transition-all duration-400">
                     <h4 className="font-medium text-primary-dark mb-2">
-                      Build Trust:
+                      {t('buildTrustTitle')}
                     </h4>
                     <p className="text-primary-dark/70">
-                      Share relevant examples and demonstrate expertise without
-                      overwhelming Jacob with technical jargon.
+                      {t('buildTrustDesc')}
                     </p>
                   </div>
                 </div>
@@ -442,8 +526,7 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
             </div>
             <div className="bg-gradient-to-br from-primary-light/15 to-accent/10 p-4 rounded-xl mt-4 border border-primary-light/20">
               <p className="text-primary-dark font-medium">
-                Stay professional and confident - help Jacob solve his real
-                business problems.
+                {t('stayProfessional')}
               </p>
             </div>
           </div>
@@ -458,62 +541,55 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
           <div className="bg-gradient-to-r from-primary-light/10 to-accent/5 p-8 border-b border-primary-light/30">
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center text-primary-dark font-bold text-xl shadow-paper">
-                7
+                8
               </div>
               <h2 className="text-3xl font-light text-primary-dark tracking-wide">
-                Keep It Flowing
+                {t('keepFlowing')}
               </h2>
             </div>
           </div>
           <div className="p-6 flex-1 h-full flex flex-col">
             <h3 className="text-2xl font-medium text-primary-dark mb-4">
-              Technical Tips for Smooth Practice
+              {t('technicalTips')}
             </h3>
             <p className="text-primary-dark/80 mb-4 leading-relaxed">
-              To get the most from your practice session:
+              {t('getMostFrom')}
             </p>
             <div className="flex-1">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-4">
                   <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-4 rounded-xl border border-primary-light/20 hover:shadow-paper transition-all duration-400">
                     <h4 className="font-medium text-primary-dark mb-2">
-                      Optimal Length:
+                      {t('optimalLengthTitle')}
                     </h4>
                     <p className="text-primary-dark/70">
-                      Aim for 7-10 meaningful exchanges. This gives you enough
-                      time to practice discovery, handle objections, and attempt
-                      a close.
+                      {t('optimalLengthDesc')}
                     </p>
                   </div>
                   <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-4 rounded-xl border border-primary-light/20 hover:shadow-paper transition-all duration-400">
                     <h4 className="font-medium text-primary-dark mb-2">
-                      Stay Focused:
+                      {t('stayFocusedTitle')}
                     </h4>
                     <p className="text-primary-dark/70">
-                      Jacob will stay in character as your prospect. If you need
-                      coaching or have questions about sales techniques, save
-                      those for after the session.
+                      {t('stayFocusedDesc')}
                     </p>
                   </div>
                 </div>
                 <div className="space-y-4">
                   <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-4 rounded-xl border border-primary-light/20 hover:shadow-paper transition-all duration-400">
                     <h4 className="font-medium text-primary-dark mb-2">
-                      Natural Rhythm:
+                      {t('naturalRhythmTitle')}
                     </h4>
                     <p className="text-primary-dark/70">
-                      Let the conversation flow naturally. Jacob will pause
-                      between responses to give you time to think and respond
-                      thoughtfully.
+                      {t('naturalRhythmDesc')}
                     </p>
                   </div>
                   <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-4 rounded-xl border border-primary-light/20 hover:shadow-paper transition-all duration-400">
                     <h4 className="font-medium text-primary-dark mb-2">
-                      Take Notes:
+                      {t('takeNotesTitle')}
                     </h4>
                     <p className="text-primary-dark/70">
-                      Keep track of key points and objections during the
-                      conversation for better post-session analysis.
+                      {t('takeNotesDesc')}
                     </p>
                   </div>
                 </div>
@@ -521,8 +597,7 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
             </div>
             <div className="bg-gradient-to-br from-primary-light/15 to-accent/10 p-4 rounded-xl mt-4 border border-primary-light/20">
               <p className="text-primary-dark font-medium">
-                Take notes during the conversation - you'll get detailed
-                feedback afterward.
+                {t('takeNotesReminder')}
               </p>
             </div>
           </div>
@@ -537,34 +612,33 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
           <div className="bg-gradient-to-r from-primary-light/10 to-accent/5 p-8 border-b border-primary-light/30">
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center text-primary-dark font-bold text-xl shadow-paper">
-                8
+                9
               </div>
               <h2 className="text-3xl font-light text-primary-dark tracking-wide">
-                Transform Practice into Progress
+                {t('transformProgress')}
               </h2>
             </div>
           </div>
           <div className="p-8 flex-1">
             <div className="space-y-6 h-full flex flex-col">
               <h3 className="text-2xl font-medium text-primary-dark">
-                Turn Every Session into Growth
+                {t('turnGrowth')}
               </h3>
               <div className="flex-1">
                 <p className="text-primary-dark/80 mb-4 leading-relaxed">
-                  When you're ready to receive feedback, simply say "END
-                  TRAINING" and Jacob switches from prospect to sales coach.
+                  {t('endTraining')}
                 </p>
                 <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-4 rounded-xl mb-4 border border-primary-light/20">
                   <h4 className="font-medium text-primary-dark mb-3 text-sm">
-                    You'll receive detailed scoring across five crucial areas:
+                    {t('detailedScoring')}
                   </h4>
                   <div className="space-y-1">
                     {[
-                      "Discovery & Needs Assessment",
-                      "Objection Handling",
-                      "Value Communication",
-                      "Relationship Building",
-                      "Closing Technique",
+                      t('discoveryAssessment'),
+                      t('objectionHandling'),
+                      t('valueCommunication'),
+                      t('relationshipBuilding'),
+                      t('closingTechnique'),
                     ].map((area, index) => (
                       <div key={index} className="flex items-center space-x-2">
                         <div className="w-1.5 h-1.5 bg-accent rounded-full" />
@@ -576,14 +650,12 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
                   </div>
                 </div>
                 <p className="text-primary-dark/80 leading-relaxed">
-                  Each score comes with specific examples from your
-                  conversation, plus actionable suggestions for improvement.
+                  {t('specificExamplesDesc')}
                 </p>
               </div>
               <div className="bg-gradient-to-br from-primary-light/15 to-accent/10 p-6 rounded-xl border border-primary-light/20">
                 <p className="text-primary-dark font-medium">
-                  Jacob notices everything from your questioning technique to
-                  how you handle price objections.
+                  {t('jacobNoticesDesc')}
                 </p>
               </div>
             </div>
@@ -599,61 +671,55 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
           <div className="bg-gradient-to-r from-primary-light/10 to-accent/5 p-8 border-b border-primary-light/30">
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center text-primary-dark font-bold text-xl shadow-paper">
-                9
+                10
               </div>
               <h2 className="text-3xl font-light text-primary-dark tracking-wide">
-                When Things Go Off Track
+                {t('thingsOffTrack')}
               </h2>
             </div>
           </div>
           <div className="p-6 flex-1 h-full flex flex-col">
             <h3 className="text-2xl font-medium text-primary-dark mb-4">
-              Keep Your Practice Session on Course
+              {t('keepOnCourse')}
             </h3>
             <p className="text-primary-dark/80 mb-4 leading-relaxed">
-              Sometimes conversations take unexpected turns. Here's how to get
-              back on track:
+              {t('unexpectedTurnsDesc')}
             </p>
             <div className="flex-1">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-4">
                   <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-4 rounded-xl border border-primary-light/20 hover:shadow-paper transition-all duration-400">
                     <h4 className="font-medium text-primary-dark mb-2">
-                      If Jacob seems confused:
+                      {t('jacobConfusedTitle')}
                     </h4>
                     <p className="text-primary-dark/70">
-                      He might say "I'm here to evaluate your services, where
-                      were we?" This means you might have slipped into training
-                      mode instead of selling mode.
+                      {t('jacobConfusedDesc')}
                     </p>
                   </div>
                   <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-4 rounded-xl border border-primary-light/20 hover:shadow-paper transition-all duration-400">
                     <h4 className="font-medium text-primary-dark mb-2">
-                      If you need a reset:
+                      {t('needResetTitle')}
                     </h4>
                     <p className="text-primary-dark/70">
-                      Simply restart by saying "START TRAINING" again. Jacob
-                      will begin fresh, ready for another practice round.
+                      {t('needResetDesc')}
                     </p>
                   </div>
                 </div>
                 <div className="space-y-4">
                   <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-4 rounded-xl border border-primary-light/20 hover:shadow-paper transition-all duration-400">
                     <h4 className="font-medium text-primary-dark mb-2">
-                      If technical issues occur:
+                      {t('technicalIssuesTitle')}
                     </h4>
                     <p className="text-primary-dark/70">
-                      Jacob will acknowledge connection problems and guide you
-                      back to where you left off.
+                      {t('technicalIssuesDesc')}
                     </p>
                   </div>
                   <div className="bg-gradient-to-br from-primary-light/15 to-accent/8 p-4 rounded-xl border border-primary-light/20 hover:shadow-paper transition-all duration-400">
                     <h4 className="font-medium text-primary-dark mb-2">
-                      If conversation stalls:
+                      {t('conversationStallsTitle')}
                     </h4>
                     <p className="text-primary-dark/70">
-                      Ask open-ended questions about Jacob's business challenges
-                      to restart meaningful dialogue.
+                      {t('conversationStallsDesc')}
                     </p>
                   </div>
                 </div>
@@ -661,9 +727,7 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
             </div>
             <div className="bg-gradient-to-br from-primary-light/15 to-accent/10 p-4 rounded-xl mt-4 border border-primary-light/20">
               <p className="text-primary-dark font-medium">
-                Remember: Jacob is designed to be a realistic prospect, so some
-                pushback and skepticism is normal and beneficial for your
-                learning.
+                {t('realisticProspectDesc')}
               </p>
             </div>
           </div>
@@ -678,20 +742,19 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
           <div className="bg-gradient-to-r from-primary-light/10 to-accent/5 p-6 border-b border-primary-light/30">
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center text-primary-dark font-bold text-xl shadow-paper">
-                10
+                11
               </div>
               <h2 className="text-3xl font-light text-primary-dark tracking-wide">
-                Measure Your Growth
+                {t('measureGrowth')}
               </h2>
             </div>
           </div>
           <div className="p-6 flex-1 h-full flex flex-col">
             <h3 className="text-2xl font-medium text-primary-dark mb-4">
-              Know When You're Winning
+              {t('knowWinning')}
             </h3>
             <p className="text-primary-dark/80 mb-4 leading-relaxed">
-              Great sales conversations have measurable qualities. Here's what
-              success looks like with Jacob:
+              {t('measurableQualities')}
             </p>
             <div className="flex-1 min-h-0">
               <div className="grid grid-cols-2 gap-4 h-full">
@@ -713,8 +776,7 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
                       </svg>
                     </div>
                     <p className="text-primary-dark/80">
-                      You asked discovery questions that uncovered Jacob's
-                      specific business challenges
+                      {t('discoveryQuestionsDesc')}
                     </p>
                   </div>
                   <div className="flex items-start space-x-3">
@@ -734,8 +796,7 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
                       </svg>
                     </div>
                     <p className="text-primary-dark/80">
-                      You handled his objections with relevant proof points and
-                      genuine empathy
+                      {t('handledObjectionsDesc')}
                     </p>
                   </div>
                   <div className="flex items-start space-x-3">
@@ -755,8 +816,7 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
                       </svg>
                     </div>
                     <p className="text-primary-dark/80">
-                      You connected features to benefits that mattered to his
-                      accounting firm
+                      {t('connectedFeaturesDesc')}
                     </p>
                   </div>
                 </div>
@@ -778,8 +838,7 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
                       </svg>
                     </div>
                     <p className="text-primary-dark/80">
-                      You built rapport while maintaining professional
-                      credibility
+                      {t('builtRapportDesc')}
                     </p>
                   </div>
                   <div className="flex items-start space-x-3">
@@ -799,17 +858,16 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
                       </svg>
                     </div>
                     <p className="text-primary-dark/80">
-                      You guided toward commitment with natural, non-pushy
-                      closing techniques
+                      {t('guidedCommitmentDesc')}
                     </p>
                   </div>
                 </div>
               </div>
             </div>
             <div className="bg-gradient-to-br from-primary-light/15 to-accent/10 p-4 rounded-xl mt-2 border border-primary-light/20">
-              <p className="text-primary-dark font-medium text-center">
-                Master these skills here, and you'll excel in the field.
-              </p>
+                              <p className="text-primary-dark font-medium text-center">
+                  {t('masterSkills')}
+                </p>
             </div>
           </div>
         </div>
@@ -888,11 +946,11 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
       <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 text-primary-dark text-center z-40">
         {activeCard < cards.length - 1 ? (
           <p className="text-sm opacity-75 font-light">
-            Use mouse wheel, arrow keys, or click dots to navigate
+            {t('useMouseWheel')}
           </p>
         ) : (
           <p className="text-sm opacity-75 font-light">
-            Ready to start your sales training?
+            {t('readyToStart')}
           </p>
         )}
       </div>
@@ -917,7 +975,7 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
             className="bg-primary-dark hover:bg-primary-dark/90 text-white px-12 py-6 text-xl font-medium rounded-xl transition-all duration-400 transform hover:scale-105 hover:shadow-heinrich-hover border border-primary-light/20"
             onClick={onComplete}
           >
-            Start Sales Training with Jacob
+            {t('startTraining')}
           </Button>
         </div>
       )}

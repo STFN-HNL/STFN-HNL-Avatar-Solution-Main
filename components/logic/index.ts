@@ -9,3 +9,4 @@ export {
   MessageSender,
   useStreamingAvatarContext,
 } from "./context";
+export { LanguageProvider, useLanguage, INTRO_MESSAGES } from "./useLanguage";

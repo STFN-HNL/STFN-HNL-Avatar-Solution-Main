@@ -22,9 +22,13 @@ import {
   StreamingAvatarProvider,
   StreamingAvatarSessionState,
   useStreamingAvatarContext,
+  useLanguage,
+  INTRO_MESSAGES,
 } from "./logic";
 import { LoadingIcon } from "./Icons";
 import { MessageHistory } from "./AvatarSession/MessageHistory";
+
+
 
 const DEFAULT_CONFIG: StartAvatarRequest = {
   quality: AvatarQuality.High,
@@ -47,12 +51,46 @@ function InteractiveAvatar() {
     useStreamingAvatarSession();
   const { startVoiceChat } = useVoiceChat();
   const { avatarRef } = useStreamingAvatarContext();
+  const { selectedLanguage, t } = useLanguage();
 
   const [config, setConfig] = useState<StartAvatarRequest>(DEFAULT_CONFIG);
   const [error, setError] = useState<string | null>(null);
   const [hasSpokenIntro, setHasSpokenIntro] = useState(false);
 
   const mediaStream = useRef<HTMLVideoElement>(null);
+
+  // Update config when language changes
+  useEffect(() => {
+    const handleLanguageChange = async () => {
+      console.log(`Language changing to: ${selectedLanguage}`);
+      setConfig(prev => ({ 
+        ...prev, 
+        language: selectedLanguage,
+        sttSettings: {
+          ...prev.sttSettings,
+          language: selectedLanguage
+        }
+      }));
+      
+      // If we have an active session with voice chat, restart voice chat with new language
+      if (sessionState === StreamingAvatarSessionState.CONNECTED && avatarRef.current) {
+        try {
+          console.log(`Restarting voice chat for language change to: ${selectedLanguage}`);
+          // Stop current voice chat
+          avatarRef.current.closeVoiceChat();
+          // Wait a moment for cleanup
+          await new Promise(resolve => setTimeout(resolve, 500));
+          // Restart voice chat with new language settings
+          await startVoiceChat();
+          console.log(`Voice chat restarted with language: ${selectedLanguage}`);
+        } catch (error) {
+          console.error('Error restarting voice chat for language change:', error);
+        }
+      }
+    };
+    
+    handleLanguageChange();
+  }, [selectedLanguage, sessionState, startVoiceChat, avatarRef]);
 
   async function fetchAccessToken() {
     try {
@@ -115,8 +153,9 @@ function InteractiveAvatar() {
       if (!hasSpokenIntro) {
         setTimeout(() => {
           console.log(">>>>> Attempting to speak intro message");
+          const introText = INTRO_MESSAGES[selectedLanguage] || INTRO_MESSAGES.en;
           avatar.speak({
-            text: "Hi, I'm Jacob Fischer from Fischer Accounting & Tax Consulting. In the next 5 minutes, we'll roleplay a sales call—your job is to sell me your telecom services while handling my objections on price and value. Say \"START Training\" to begin.",
+            text: introText,
             taskType: TaskType.REPEAT,
             taskMode: TaskMode.SYNC,
           });
@@ -235,18 +274,18 @@ function InteractiveAvatar() {
                       </div>
                       <div className="text-center space-y-2">
                         <h3 className="text-2xl font-bold text-primary-dark">
-                          Jacob Fischer
+                          {t('jacobName')}
                         </h3>
                         <p className="text-primary-light font-medium">
-                          Fischer Accounting & Tax Consulting
+                          {t('jacobCompany')}
                         </p>
                         <div className="bg-accent/20 rounded-full px-4 py-2 inline-block">
                           <p className="text-primary-dark text-sm font-medium">
-                            AI Sales Training Partner
+                            {t('aiPartner')}
                           </p>
                         </div>
                         <p className="text-primary-light text-sm mt-3">
-                          Ready to help you practice your telecom sales pitch
+                          {t('readyToHelp')}
                         </p>
                       </div>
                     </div>
@@ -260,17 +299,20 @@ function InteractiveAvatar() {
                   )}
 
                   {sessionState === StreamingAvatarSessionState.INACTIVE ? (
-                    <Button
-                      className="bg-primary-dark hover:bg-primary-dark/90 text-white px-12 py-6 text-xl font-medium rounded-xl transition-all duration-400 transform hover:scale-105 hover:shadow-heinrich-hover border border-primary-light/20"
-                      onClick={startSession}
-                    >
-                      Start Training
-                    </Button>
+                    <>                      
+                      {/* Start Training Button */}
+                      <Button
+                        className="bg-primary-dark hover:bg-primary-dark/90 text-white px-12 py-6 text-xl font-medium rounded-xl transition-all duration-400 transform hover:scale-105 hover:shadow-heinrich-hover border border-primary-light/20"
+                        onClick={startSession}
+                      >
+                        {t('startTraining')}
+                      </Button>
+                    </>
                   ) : sessionState ===
                     StreamingAvatarSessionState.CONNECTING ? (
                     <div className="flex items-center space-x-2">
                       <LoadingIcon />
-                      <span>Starting Avatar...</span>
+                      <span>{t('startingAvatar')}</span>
                     </div>
                   ) : null}
                 </div>
