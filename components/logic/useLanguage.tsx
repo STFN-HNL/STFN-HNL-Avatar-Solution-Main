@@ -233,6 +233,9 @@ const translations = {
     
     // Card 3: Before You Start
     beforeYouStart: "Before You Start",
+    
+    // Navigation
+    backToInstructions: "Back to Instructions",
   },
   
   nl: {
@@ -457,6 +460,9 @@ const translations = {
     
     // Card 3: Before You Start
     beforeYouStart: "Voordat Je Begint",
+    
+    // Navigation
+    backToInstructions: "Terug naar Instructies",
   },
   
   tr: {
@@ -681,6 +687,9 @@ const translations = {
     
     // Card 3: Before You Start
     beforeYouStart: "Başlamadan Önce",
+    
+    // Navigation
+    backToInstructions: "Talimatlara Geri Dön",
   },
   
   pt: {
@@ -905,6 +914,9 @@ const translations = {
     
     // Card 3: Before You Start
     beforeYouStart: "Antes de Começar",
+    
+    // Navigation
+    backToInstructions: "Voltar às Instruções",
   },
   
   es: {
@@ -1129,6 +1141,9 @@ const translations = {
     
     // Card 3: Before You Start
     beforeYouStart: "Antes de Comenzar",
+    
+    // Navigation
+    backToInstructions: "Volver a las Instrucciones",
   },
 };
 

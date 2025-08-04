@@ -25,7 +25,7 @@ import {
   useLanguage,
   INTRO_MESSAGES,
 } from "./logic";
-import { LoadingIcon } from "./Icons";
+import { LoadingIcon, BackIcon } from "./Icons";
 import { MessageHistory } from "./AvatarSession/MessageHistory";
 
 
@@ -46,7 +46,11 @@ const DEFAULT_CONFIG: StartAvatarRequest = {
   },
 };
 
-function InteractiveAvatar() {
+interface InteractiveAvatarProps {
+  onBack?: () => void;
+}
+
+function InteractiveAvatar({ onBack }: InteractiveAvatarProps) {
   const { initAvatar, startAvatar, stopAvatar, sessionState, stream } =
     useStreamingAvatarSession();
   const { startVoiceChat } = useVoiceChat();
@@ -191,6 +195,18 @@ function InteractiveAvatar() {
       {sessionState === StreamingAvatarSessionState.CONNECTED ? (
         // Full-screen layout when connected - back to original dimensions
         <div className="w-screen h-screen flex flex-col items-center justify-center bg-gradient-to-br from-neutral via-primary-light/10 to-accent/10">
+          {/* Back button for connected state */}
+          {onBack && (
+            <div className="absolute top-6 left-6 z-10">
+              <button
+                onClick={onBack}
+                className="flex items-center space-x-2 bg-neutral/90 backdrop-blur-sm border border-primary-light/30 hover:border-primary-light/50 text-primary-dark hover:text-primary-dark/80 px-4 py-2 rounded-xl transition-all duration-300 hover:bg-neutral/95 hover:shadow-lg"
+              >
+                <BackIcon size={20} />
+                <span className="text-sm font-medium">{t('backToInstructions')}</span>
+              </button>
+            </div>
+          )}
           <div className="w-[960px] flex flex-col items-start justify-start gap-5 mx-auto">
             <div className="w-full flex flex-row gap-6">
               {/* Avatar section - left side, original size */}
@@ -221,7 +237,19 @@ function InteractiveAvatar() {
         // Card layout when not connected - matches onboarding cards positioning exactly
         <div className="fixed inset-0 flex items-center justify-center p-6">
           <div className="max-w-5xl w-full">
-            <div className="bg-neutral rounded-3xl shadow-2xl overflow-hidden h-[600px] shadow-stack">
+            <div className="bg-neutral rounded-3xl shadow-2xl overflow-hidden h-[600px] shadow-stack relative">
+              {/* Back button for card layout */}
+              {onBack && (
+                <div className="absolute top-6 left-6 z-10">
+                  <button
+                    onClick={onBack}
+                    className="flex items-center space-x-2 bg-primary-light/10 backdrop-blur-sm border border-primary-light/30 hover:border-primary-light/50 text-primary-dark hover:text-primary-dark/80 px-4 py-2 rounded-xl transition-all duration-300 hover:bg-primary-light/20 hover:shadow-lg"
+                  >
+                    <BackIcon size={20} />
+                    <span className="text-sm font-medium">{t('backToInstructions')}</span>
+                  </button>
+                </div>
+              )}
               <div className="flex flex-col h-full">
                 <div className="relative w-full h-[400px] overflow-hidden flex flex-col items-center justify-center bg-gradient-to-br from-accent/10 to-primary-light/10 rounded-t-3xl">
                   {sessionState !== StreamingAvatarSessionState.INACTIVE ? (
@@ -325,10 +353,10 @@ function InteractiveAvatar() {
   );
 }
 
-export default function InteractiveAvatarWrapper() {
+export default function InteractiveAvatarWrapper({ onBack }: InteractiveAvatarProps) {
   return (
     <StreamingAvatarProvider>
-      <InteractiveAvatar />
+      <InteractiveAvatar onBack={onBack} />
     </StreamingAvatarProvider>
   );
 }

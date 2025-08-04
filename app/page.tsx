@@ -19,6 +19,15 @@ export default function App() {
     }, 800); // 800ms transition duration
   };
 
+  const handleBackToOnboarding = () => {
+    setIsTransitioning(true);
+    // Delay the actual switch to allow for smooth transition
+    setTimeout(() => {
+      setShowOnboarding(true);
+      setIsTransitioning(false);
+    }, 800); // 800ms transition duration
+  };
+
   return (
     <LanguageProvider>
       <div className="relative w-screen h-screen overflow-hidden">
@@ -45,7 +54,7 @@ export default function App() {
                 : "opacity-100 scale-100 translate-y-0"
             }`}
           >
-            <InteractiveAvatar />
+            <InteractiveAvatar onBack={handleBackToOnboarding} />
           </div>
         )}
       </div>
