@@ -59,7 +59,7 @@ const StackedCard: React.FC<StackedCardProps> = ({
         zIndex: zIndex,
         transform: transform,
         opacity: opacity,
-        transition: "all 400ms cubic-bezier(0.4, 0.0, 0.2, 1)", // Heinrich Co. sophisticated timing
+        transition: "all 1200ms cubic-bezier(0.4, 0.0, 0.2, 1)", // Heinrich Co. sophisticated timing - cinematic, luxurious
         pointerEvents: pointerEvents,
       }}
     >
@@ -891,7 +891,7 @@ export const ScrollOnboarding: React.FC<ScrollOnboardingProps> = ({
           // Scroll up - previous card
           setActiveCard((prev) => Math.max(prev - 1, 0));
         }
-      }, 50);
+      }, 150);
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
