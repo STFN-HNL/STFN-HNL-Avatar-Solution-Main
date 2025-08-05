@@ -288,16 +288,13 @@ function InteractiveAvatar({ onBack }: InteractiveAvatarProps) {
         setTimeout(() => {
           console.log(">>>>> Attempting to speak intro message");
           const introText = INTRO_MESSAGES[selectedLanguage] || INTRO_MESSAGES.en;
-          // Temporarily disable intro to test language switching
-          /*
           avatar.speak({
             text: introText,
             taskType: TaskType.REPEAT,
             taskMode: TaskMode.SYNC,
           });
-          */
           setHasSpokenIntro(true);
-          console.log(">>>>> Intro message disabled for testing");
+          console.log(">>>>> Intro message sent");
         }, 2000);
       }
     } catch (error) {
