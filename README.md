@@ -3,6 +3,29 @@
 This is a sample project and was bootstrapped using [NextJS](https://nextjs.org/).
 Feel free to play around with the existing code and please leave any feedback for the SDK [here](https://github.com/HeyGen-Official/StreamingAvatarSDK/discussions).
 
+## Features
+
+✅ **Multi-language Support** - Avatar supports Dutch, English, Turkish, Portuguese, and Spanish
+✅ **Persistent Language Configuration** - Language stays consistent throughout conversations
+✅ **Speech-to-Text Integration** - Voice recognition matches selected language
+✅ **Dynamic Language Switching** - Change languages with automatic avatar restart
+✅ **Localized UI** - Interface adapts to selected language
+
+## Language Configuration
+
+The avatar is configured with proper language support including:
+- Avatar language configuration
+- Knowledge base selection per language
+- STT (Speech-To-Text) language matching
+- Localized introduction messages
+
+### Supported Languages
+- English (en)
+- Dutch (nl) 
+- Turkish (tr)
+- Portuguese (pt)
+- Spanish (es)
+
 ## Getting Started FAQ
 
 ### Setting up the demo
@@ -25,9 +48,17 @@ Feel free to play around with the existing code and please leave any feedback fo
 
 NOTE: Make sure you have enter your token into the `.env` file and run `npm run dev`.
 
-To start your 'session' with a Interactive Avatar, first click the 'start' button. If your HeyGen API key is entered into the Server's .env file, then you should see our demo Interactive Avatar appear.
+1. **Select Language**: Choose your preferred language from the dropdown
+2. **Start Training**: Click the "Start Training" button to initialize the avatar
+3. **Begin Conversation**: The avatar will introduce itself in the selected language
+4. **Voice/Text Chat**: Communicate via voice or text - both will stay in the selected language
 
-If you want to see a different Avatar or try a different voice, you can close the session and enter the IDs and then 'start' the session again. Please see below for information on where to retrieve different Avatar and voice IDs that you can use.
+### Language Switching
+
+If you want to change languages during a session:
+1. Select a new language from the dropdown
+2. The avatar will automatically restart with the new language configuration
+3. All conversation will continue in the newly selected language
 
 ### Which Avatars can I use with this project?
 
@@ -35,7 +66,14 @@ By default, there are several Public Avatars that can be used in Interactive Ava
 
 You can create your own custom Interactive Avatars at labs.heygen.com/interactive-avatar by clicking 'create interactive avatar' on the top-left of the screen.
 
+### Technical Implementation
+
+The language configuration ensures:
+- Proper avatar session initialization with selected language
+- STT language matching for accurate voice recognition  
+- Correct knowledge base selection per language
+- Automatic language synchronization across restarts
+
 ### Where can I read more about enterprise-level usage of the Interactive Avatar API?
 
 Please read our Interactive Avatar 101 article for more information on pricing: https://help.heygen.com/en/articles/9182113-interactive-avatar-101-your-ultimate-guide
-# STFN-HNL-Avatar-Solution-Main
