@@ -50,6 +50,7 @@ const DEFAULT_CONFIG: StartAvatarRequest = {
   voiceChatTransport: VoiceChatTransport.WEBSOCKET,
   sttSettings: {
     provider: STTProvider.DEEPGRAM,
+    language: "en", // Add language to STT settings
   },
 };
 
@@ -69,6 +70,10 @@ function InteractiveAvatar({ onBack }: InteractiveAvatarProps) {
     ...DEFAULT_CONFIG,
     language: selectedLanguage,
     knowledgeId: KNOWLEDGE_IDS[selectedLanguage] || KNOWLEDGE_IDS.en,
+    sttSettings: {
+      ...DEFAULT_CONFIG.sttSettings,
+      language: selectedLanguage,
+    },
   }));
   const [error, setError] = useState<string | null>(null);
   const [hasSpokenIntro, setHasSpokenIntro] = useState(false);
@@ -78,29 +83,31 @@ function InteractiveAvatar({ onBack }: InteractiveAvatarProps) {
 
   // Update config when language changes OR on initial load
   useEffect(() => {
-    console.log(`Updating config for language: ${selectedLanguage}`);
-    console.log(`Previous language was: ${previousLanguageRef.current}`);
+    console.log(`Language configuration updated: ${selectedLanguage}`);
     
     // Always update config to match current language
     setConfig(prevConfig => ({
       ...prevConfig, 
       language: selectedLanguage,
       knowledgeId: KNOWLEDGE_IDS[selectedLanguage] || KNOWLEDGE_IDS.en,
+      sttSettings: {
+        ...prevConfig.sttSettings,
+        language: selectedLanguage,
+      },
     }));
 
     const languageChanged = previousLanguageRef.current !== selectedLanguage;
     
     if (languageChanged) {
-      console.log(`Language changing from ${previousLanguageRef.current} to: ${selectedLanguage}`);
+      console.log(`Language changed to: ${selectedLanguage}`);
       
       // Handle avatar restart if session is active
       if (sessionState === StreamingAvatarSessionState.CONNECTED) {
-        console.log("Avatar session is active, restarting for language change...");
+        console.log("Restarting avatar for language change...");
         
         const restartAvatar = async () => {
           try {
-            console.log(`Restarting avatar for language change to: ${selectedLanguage}`);
-            console.log(`Using knowledge base ID: ${KNOWLEDGE_IDS[selectedLanguage] || KNOWLEDGE_IDS.en}`);
+            console.log(`Restarting avatar with language: ${selectedLanguage}`);
             
             // Stop current avatar session
             await stopAvatar();
@@ -113,6 +120,10 @@ function InteractiveAvatar({ onBack }: InteractiveAvatarProps) {
               ...config,
               language: selectedLanguage,
               knowledgeId: KNOWLEDGE_IDS[selectedLanguage] || KNOWLEDGE_IDS.en,
+              sttSettings: {
+                ...config.sttSettings,
+                language: selectedLanguage, // Update STT language for restart as well
+              },
             };
             
             // Start new session with updated language configuration
@@ -120,32 +131,27 @@ function InteractiveAvatar({ onBack }: InteractiveAvatarProps) {
             const avatar = await initAvatar(accessToken);
             
             avatar.on(StreamingEvents.USER_START, (event) => {
-              console.log(">>>>> User started:", event);
+              console.log("User started talking");
             });
             avatar.on(StreamingEvents.USER_STOP, (event) => {
-              console.log(">>>>> User stopped:", event);
+              console.log("User stopped talking");
             });
             avatar.on(StreamingEvents.AVATAR_START_TALKING, (event) => {
-              console.log(">>>>> Avatar started talking:", event);
+              console.log("Avatar started talking");
             });
             avatar.on(StreamingEvents.AVATAR_STOP_TALKING, (event) => {
-              console.log(">>>>> Avatar stopped talking:", event);
+              console.log("Avatar stopped talking");
             });
             avatar.on(StreamingEvents.STREAM_READY, () => {
-              console.log(">>>>> Stream ready after language change");
+              console.log("Stream ready after language change");
             });
             
             await startAvatar(newConfig);
             await startVoiceChat();
             
-            console.log(`Avatar successfully restarted with language: ${selectedLanguage}`);
+            console.log(`Avatar restarted successfully with language: ${selectedLanguage}`);
           } catch (error) {
             console.error('Error restarting avatar for language change:', error);
-            console.error('Full error details:', {
-              message: error?.message,
-              stack: error?.stack,
-              name: error?.name
-            });
             setError('Failed to switch language. Please restart the session manually.');
           }
         };
@@ -160,21 +166,17 @@ function InteractiveAvatar({ onBack }: InteractiveAvatarProps) {
 
   async function fetchAccessToken() {
     try {
-      console.log(">>> Making request to /api/get-access-token...");
       const response = await fetch("/api/get-access-token", {
         method: "POST",
       });
       
-      console.log(">>> Response status:", response.status, response.statusText);
-      
       if (!response.ok) {
         const errorText = await response.text();
-        console.error(">>> API Error Response:", errorText);
-        throw new Error(`API request failed: ${response.status} ${response.statusText} - ${errorText}`);
+        console.error("Failed to fetch access token:", response.status, response.statusText);
+        throw new Error(`API request failed: ${response.status} ${response.statusText}`);
       }
       
       const token = await response.text();
-      console.log(">>> Access Token received:", token?.substring(0, 20) + "..."); // Log first 20 chars
       
       if (!token || token.trim() === '') {
         throw new Error("Empty token received from API");
@@ -182,11 +184,11 @@ function InteractiveAvatar({ onBack }: InteractiveAvatarProps) {
 
       return token;
     } catch (error) {
-      console.error(">>> Error in fetchAccessToken:", error);
+      console.error("Error fetching access token:", error);
       if (error instanceof Error) {
         throw error;
       } else {
-        throw new Error(`Network error: ${String(error)}`);
+        throw new Error("Unknown error occurred while fetching access token");
       }
     }
   }
@@ -197,8 +199,7 @@ function InteractiveAvatar({ onBack }: InteractiveAvatarProps) {
       setError(null); // Clear any previous errors
       setHasSpokenIntro(false); // Reset intro flag
       
-      console.log(">>> Starting avatar session...");
-      console.log(">>> Current config:", config);
+      console.log("Starting avatar session...");
       
       // Validate configuration
       if (!config?.avatarName) {
@@ -207,152 +208,63 @@ function InteractiveAvatar({ onBack }: InteractiveAvatarProps) {
       if (!config?.language) {
         throw new Error("Language is required in configuration");
       }
-      console.log(">>> Configuration validation passed");
-      console.log(">>> CURRENT CONFIG DETAILS:");
-      console.log(`>>> Language: ${config.language}`);
-      console.log(`>>> Knowledge ID: ${config.knowledgeId}`);
-      console.log(`>>> STT Provider: ${config.sttSettings?.provider || 'not set'}`);
-      console.log(`>>> Selected Language from context: ${selectedLanguage}`);
-      console.log(">>> Full config:", JSON.stringify(config, null, 2));
+      console.log(`Language: ${config.language} | STT: ${config.sttSettings?.language} | Knowledge: ${config.knowledgeId}`);
       
-      console.log(">>> Step 1: Fetching access token...");
-      let accessToken;
-      try {
-        accessToken = await fetchAccessToken();
-        console.log(">>> Step 1 completed - Access token received, length:", accessToken?.length);
-      } catch (tokenError) {
-        console.error(">>> Step 1 FAILED - Error fetching access token:", tokenError);
-        throw new Error(`Failed to fetch access token: ${tokenError?.message || tokenError}`);
-      }
-
-      console.log(">>> Step 2: Initializing avatar...");
-      console.log(">>> Access token for initialization:", accessToken ? `${accessToken.substring(0, 20)}...` : 'null');
-      let avatar;
-      try {
-        avatar = await initAvatar(accessToken);
-        console.log(">>> Step 2 completed - Avatar initialized successfully", avatar);
-      } catch (initError) {
-        console.error(">>> Step 2 FAILED - Error initializing avatar:", initError);
-        throw new Error(`Failed to initialize avatar: ${initError?.message || initError}`);
-      }
+      const accessToken = await fetchAccessToken();
+      const avatar = await initAvatar(accessToken);
 
       avatar.on(StreamingEvents.USER_START, (event) => {
-        console.log(">>>>> User started:", event);
+        console.log("User started talking");
       });
       avatar.on(StreamingEvents.USER_STOP, (event) => {
-        console.log(">>>>> User stopped:", event);
+        console.log("User stopped talking");
       });
       avatar.on(StreamingEvents.AVATAR_START_TALKING, (event) => {
-        console.log(">>>>> Avatar started talking:", event);
+        console.log("Avatar started talking");
       });
       avatar.on(StreamingEvents.AVATAR_STOP_TALKING, (event) => {
-        console.log(">>>>> Avatar stopped talking:", event);
+        console.log("Avatar stopped talking");
       });
       avatar.on(StreamingEvents.USER_TALKING_MESSAGE, (event) => {
-        console.log(">>>>> User talking message:", event);
+        // User speech recognition
       });
       avatar.on(StreamingEvents.AVATAR_TALKING_MESSAGE, (event) => {
-        console.log(">>>>> Avatar talking message:", event);
+        // Avatar speech output
       });
       avatar.on(StreamingEvents.AVATAR_END_MESSAGE, (event) => {
-        console.log(">>>>> Avatar end message:", event);
+        // Avatar finished speaking
       });
 
       // Hook into STREAM_READY to send intro when avatar is actually ready
       avatar.on(StreamingEvents.STREAM_READY, () => {
-        console.log(">>>>> Stream ready, preparing intro message");
+        console.log("Avatar stream ready");
       });
 
-      console.log(">>> Step 3: Starting avatar with config...");
-      console.log(">>> Full config being used:", JSON.stringify(config, null, 2));
-      try {
-        await startAvatar(config);
-        console.log(">>> Step 3 completed - Avatar started successfully");
-      } catch (startError) {
-        console.error(">>> Step 3 FAILED - Error starting avatar:", startError);
-        throw new Error(`Failed to start avatar: ${startError?.message || startError}`);
-      }
-
-      console.log(">>> Step 4: Starting voice chat...");
-      try {
-        await startVoiceChat();
-        console.log(">>> Step 4 completed - Voice chat started successfully");
-      } catch (voiceChatError) {
-        console.error(">>> Voice chat failed to start:", voiceChatError);
-        // Continue without voice chat for now
-      }
+      await startAvatar(config);
+      await startVoiceChat();
 
       // Send intro message after voice chat is started
-      console.log(">>>>> Voice chat started, sending intro message");
       if (!hasSpokenIntro) {
         setTimeout(() => {
-          console.log(">>>>> Attempting to speak intro message");
           const introText = INTRO_MESSAGES[selectedLanguage] || INTRO_MESSAGES.en;
           avatar.speak({
             text: introText,
-            taskType: TaskType.REPEAT,
-            taskMode: TaskMode.SYNC,
+            taskType: TaskType.TALK,
+            taskMode: TaskMode.ASYNC,
           });
           setHasSpokenIntro(true);
-          console.log(">>>>> Intro message sent");
+          console.log("Introduction message sent");
         }, 2000);
       }
     } catch (error) {
       console.error("Error starting avatar session:", error);
       
-      // Safe error serialization to avoid circular references
-      let errorJSON = 'Could not serialize';
-      try {
-        errorJSON = JSON.stringify(error, null, 2);
-      } catch (jsonError) {
-        try {
-          // Try to serialize just the enumerable properties
-          errorJSON = JSON.stringify({
-            message: error?.message,
-            name: error?.name,
-            stack: error?.stack?.substring(0, 500) // Truncate stack trace
-          }, null, 2);
-        } catch (e) {
-          errorJSON = String(error);
-        }
-      }
-      
-      console.error("Error details:", {
-        message: error?.message,
-        stack: error?.stack,
-        name: error?.name,
-        errorType: typeof error,
-        errorConstructor: error?.constructor?.name,
-        errorJSON: errorJSON,
-        configSummary: {
-          avatarName: config?.avatarName,
-          language: config?.language,
-          quality: config?.quality
-        }
-      });
-      
       // Try to extract meaningful error message
-      let errorMessage = "Failed to start avatar session. Please check your API configuration.";
-      
+      let errorMessage = "Failed to start avatar session";
       if (error instanceof Error) {
         errorMessage = error.message;
       } else if (typeof error === 'string') {
         errorMessage = error;
-      } else if (error && typeof error === 'object') {
-        // Try to find error message in object properties
-        const possibleMessages = [
-          error.message,
-          error.error,
-          error.detail,
-          error.description,
-          error.reason
-        ].filter(Boolean);
-        
-        if (possibleMessages.length > 0) {
-          errorMessage = possibleMessages[0];
-        } else {
-          errorMessage = `Unknown error occurred. Check console for details.`;
-        }
       }
       
       setError(errorMessage);

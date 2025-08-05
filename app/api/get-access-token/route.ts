@@ -14,7 +14,9 @@ export async function POST() {
       },
     });
 
-    console.log("Response:", res);
+    if (!res.ok) {
+      throw new Error(`HeyGen API returned ${res.status}: ${res.statusText}`);
+    }
 
     const data = await res.json();
 
