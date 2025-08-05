@@ -50,7 +50,6 @@ const DEFAULT_CONFIG: StartAvatarRequest = {
   voiceChatTransport: VoiceChatTransport.WEBSOCKET,
   sttSettings: {
     provider: STTProvider.DEEPGRAM,
-    language: "en", // Add language to STT settings
   },
 };
 
@@ -72,7 +71,6 @@ function InteractiveAvatar({ onBack }: InteractiveAvatarProps) {
     knowledgeId: KNOWLEDGE_IDS[selectedLanguage] || KNOWLEDGE_IDS.en,
     sttSettings: {
       ...DEFAULT_CONFIG.sttSettings,
-      language: selectedLanguage,
     },
   }));
   const [error, setError] = useState<string | null>(null);
@@ -92,7 +90,6 @@ function InteractiveAvatar({ onBack }: InteractiveAvatarProps) {
       knowledgeId: KNOWLEDGE_IDS[selectedLanguage] || KNOWLEDGE_IDS.en,
       sttSettings: {
         ...prevConfig.sttSettings,
-        language: selectedLanguage,
       },
     }));
 
@@ -122,7 +119,6 @@ function InteractiveAvatar({ onBack }: InteractiveAvatarProps) {
               knowledgeId: KNOWLEDGE_IDS[selectedLanguage] || KNOWLEDGE_IDS.en,
               sttSettings: {
                 ...config.sttSettings,
-                language: selectedLanguage, // Update STT language for restart as well
               },
             };
             
@@ -208,7 +204,7 @@ function InteractiveAvatar({ onBack }: InteractiveAvatarProps) {
       if (!config?.language) {
         throw new Error("Language is required in configuration");
       }
-      console.log(`Language: ${config.language} | STT: ${config.sttSettings?.language} | Knowledge: ${config.knowledgeId}`);
+      console.log(`Language: ${config.language} | Knowledge: ${config.knowledgeId} | STT Provider: ${config.sttSettings?.provider}`);
       
       const accessToken = await fetchAccessToken();
       const avatar = await initAvatar(accessToken);
