@@ -50,7 +50,6 @@ const DEFAULT_CONFIG: StartAvatarRequest = {
   voiceChatTransport: VoiceChatTransport.WEBSOCKET,
   sttSettings: {
     provider: STTProvider.DEEPGRAM,
-    language: "en", // Add language to STT settings
   },
 };
 
@@ -70,10 +69,6 @@ function InteractiveAvatar({ onBack }: InteractiveAvatarProps) {
     ...DEFAULT_CONFIG,
     language: selectedLanguage,
     knowledgeId: KNOWLEDGE_IDS[selectedLanguage] || KNOWLEDGE_IDS.en,
-    sttSettings: {
-      ...DEFAULT_CONFIG.sttSettings,
-      language: selectedLanguage,
-    },
   }));
   const [error, setError] = useState<string | null>(null);
   const [hasSpokenIntro, setHasSpokenIntro] = useState(false);
@@ -91,10 +86,6 @@ function InteractiveAvatar({ onBack }: InteractiveAvatarProps) {
       ...prevConfig, 
       language: selectedLanguage,
       knowledgeId: KNOWLEDGE_IDS[selectedLanguage] || KNOWLEDGE_IDS.en,
-      sttSettings: {
-        ...prevConfig.sttSettings,
-        language: selectedLanguage,
-      },
     }));
 
     const languageChanged = previousLanguageRef.current !== selectedLanguage;
@@ -122,10 +113,6 @@ function InteractiveAvatar({ onBack }: InteractiveAvatarProps) {
               ...config,
               language: selectedLanguage,
               knowledgeId: KNOWLEDGE_IDS[selectedLanguage] || KNOWLEDGE_IDS.en,
-              sttSettings: {
-                ...config.sttSettings,
-                language: selectedLanguage, // Update STT language for restart as well
-              },
             };
             
             // Start new session with updated language configuration
@@ -224,7 +211,7 @@ function InteractiveAvatar({ onBack }: InteractiveAvatarProps) {
       console.log(">>> CURRENT CONFIG DETAILS:");
       console.log(`>>> Language: ${config.language}`);
       console.log(`>>> Knowledge ID: ${config.knowledgeId}`);
-      console.log(`>>> STT Language: ${config.sttSettings?.language || 'not set'}`);
+      console.log(`>>> STT Provider: ${config.sttSettings?.provider || 'not set'}`);
       console.log(`>>> Selected Language from context: ${selectedLanguage}`);
       console.log(">>> Full config:", JSON.stringify(config, null, 2));
       
